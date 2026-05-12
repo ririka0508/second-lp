@@ -679,101 +679,209 @@
     background: #0e0e10;
   }
 
-  /* Left: vendor side */
+  /* Left: Google Meet-style meeting view */
   .stage-left {
-    padding: 32px;
+    padding: 16px;
     border-right: 1px solid #2a2a2a;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
+    background: #202124;
   }
-  .vendor-card {
-    background: linear-gradient(135deg, #2a2520 0%, #1a1818 100%);
+  .meet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 4px 6px;
+  }
+  .meet-title-text {
+    font-size: 12px;
+    color: #e8eaed;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .meet-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #9aa0a6;
+    letter-spacing: 0.08em;
+  }
+  .meet-count {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .tile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 6px;
+    flex: 1;
+    min-height: 220px;
+  }
+  .tile {
+    position: relative;
     border-radius: 8px;
-    padding: 24px;
+    overflow: hidden;
+    background: #3c4043;
+  }
+  .tile-cam {
+    position: absolute;
+    inset: 0;
+    background: var(--grad, #3c4043);
     display: flex;
     align-items: center;
-    gap: 16px;
+    justify-content: center;
   }
-  .vendor-avatar {
-    width: 56px; height: 56px;
+  .tile-cam::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 35%, rgba(255,255,255,0.06), transparent 60%);
+    pointer-events: none;
+  }
+  .tile-initial {
+    width: 52px; height: 52px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #b91c1c, #8b6f2e);
+    background: rgba(255,255,255,0.14);
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 26px;
-    color: #faf8f3;
-    flex-shrink: 0;
-  }
-  .vendor-info { flex: 1; min-width: 0; }
-  .vendor-name {
-    font-size: 14px;
-    color: #e8e8e8;
+    font-size: 24px;
+    color: #fff;
     font-weight: 500;
+    z-index: 1;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
-  .vendor-co {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    color: #888;
-    letter-spacing: 0.12em;
-    margin-top: 4px;
-  }
-  .speaking-wave {
+  .tile-foot {
+    position: absolute;
+    bottom: 6px; left: 6px; right: 6px;
     display: flex;
     align-items: center;
-    gap: 3px;
-    height: 24px;
+    gap: 6px;
+    z-index: 2;
   }
-  .speaking-wave span {
-    display: block;
-    width: 3px;
-    background: #ef4444;
-    border-radius: 1px;
-    animation: wave 0.9s ease-in-out infinite;
+  .tile-name {
+    background: rgba(0,0,0,0.6);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: #fff;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    backdrop-filter: blur(2px);
   }
-  .speaking-wave span:nth-child(1) { height: 10px; animation-delay: 0s; }
-  .speaking-wave span:nth-child(2) { height: 18px; animation-delay: 0.15s; }
-  .speaking-wave span:nth-child(3) { height: 22px; animation-delay: 0.3s; }
-  .speaking-wave span:nth-child(4) { height: 14px; animation-delay: 0.45s; }
-  .speaking-wave span:nth-child(5) { height: 8px;  animation-delay: 0.6s; }
-  @keyframes wave {
-    0%, 100% { transform: scaleY(0.4); }
-    50% { transform: scaleY(1); }
+  .tile-name em {
+    font-style: normal;
+    color: #9aa0a6;
+    font-size: 9px;
+    margin-left: 4px;
+  }
+  .tile-mic {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .tile-mic.on { background: rgba(0,0,0,0.6); }
+  .tile-mic.muted { background: #ea4335; }
+  .tile.speaker {
+    box-shadow: inset 0 0 0 2px #34a853;
+    animation: speakerPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes speakerPulse {
+    0%, 100% { box-shadow: inset 0 0 0 2px #34a853, 0 0 0 0 rgba(52,168,83,0.0); }
+    50% { box-shadow: inset 0 0 0 2px #34a853, 0 0 0 4px rgba(52,168,83,0.18); }
+  }
+  .tile.self .tile-cam::before {
+    content: 'あなた';
+    position: absolute;
+    top: 6px; left: 6px;
+    background: rgba(0,0,0,0.55);
+    color: #e8eaed;
+    font-size: 9px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    z-index: 2;
   }
 
-  .transcript-area {
-    background: #161616;
+  /* Live captions (Meet-style) */
+  .caption-bar {
+    background: rgba(0,0,0,0.82);
     border-radius: 6px;
-    padding: 18px 20px;
-    flex: 1;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    line-height: 1.85;
-    color: #d8d2c5;
+    padding: 12px 14px;
+    min-height: 56px;
+    display: flex;
+    align-items: center;
     position: relative;
-    min-height: 160px;
   }
-  .transcript-area::before {
-    content: '▸ TRANSCRIPT / VENDOR';
-    display: block;
-    font-size: 9px;
-    letter-spacing: 0.22em;
-    color: #555;
-    margin-bottom: 14px;
-  }
-  .transcript-line-v {
+  .caption-line {
     display: none;
+    font-size: 13px;
+    line-height: 1.55;
   }
-  .transcript-line-v.active {
+  .caption-line.active {
     display: block;
-    animation: typeIn 0.6s ease-out forwards;
+    animation: captionIn 0.5s ease-out forwards;
   }
-  @keyframes typeIn {
-    from { opacity: 0; transform: translateY(8px); }
+  @keyframes captionIn {
+    from { opacity: 0; transform: translateY(4px); }
     to { opacity: 1; transform: translateY(0); }
   }
+  .caption-speaker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: #fbbc04;
+    display: inline-block;
+    margin-right: 8px;
+    padding: 2px 6px;
+    background: rgba(251, 188, 4, 0.12);
+    border-radius: 3px;
+    vertical-align: 1px;
+  }
+  .caption-text { color: #e8eaed; }
+
+  /* Meet toolbar */
+  .meet-toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 0 2px;
+  }
+  .tb-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #3c4043;
+    border: none;
+    color: #e8eaed;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    padding: 0;
+  }
+  .tb-btn:hover { background: #5f6368; }
+  .tb-btn.muted { background: #ea4335; }
+  .tb-btn.end {
+    background: #ea4335;
+    width: 52px;
+    border-radius: 18px;
+  }
+  .tb-btn.end:hover { background: #d33b2c; }
 
   /* Right: Second side */
   .stage-right {
@@ -830,6 +938,16 @@
     display: none;
   }
   .v-alert.gold { border-left-color: var(--gold); }
+  .v-alert.advisor {
+    border-left-color: #2d5072;
+    background: #eef2f7;
+  }
+  .v-alert.advisor .tag { color: #2d5072; }
+  .v-alert.pressure {
+    border-left-color: #c2410c;
+    background: #fef3eb;
+  }
+  .v-alert.pressure .tag { color: #c2410c; }
   .v-alert.active {
     display: block;
     animation: alertIn 0.6s ease-out forwards;
@@ -973,41 +1091,101 @@
 <!-- DEMO VIDEO -->
 <section class="demo-video-section" id="demo">
   <div class="container">
-    <div class="section-label"><span class="num">00</span>30-SECOND DEMO</div>
-    <h2 class="section-title">商談中、こう動く。</h2>
-    <p class="section-desc">ベンダーの説明をリアルタイムで聴き、買い手だけに見えるサイドパネルに気づきを差し込む。30秒で全体像が掴めます。</p>
+    <div class="section-label"><span class="num">00</span>LIVE MEETING — DEMO</div>
+    <h2 class="section-title">営業に、振り回されない。</h2>
+    <p class="section-desc">商談中、買い手だけのサイドパネルに「気づき」が差し込まれます。<br>価格や契約だけでなく、<em style="font-style:normal; background:var(--highlight); padding:0 4px;">そもそも何を解決しに来たのか</em>を、見失わないために。</p>
 
     <div class="video-frame">
       <div class="video-chrome">
         <div class="window-buttons"><span></span><span></span><span></span></div>
-        <div class="window-title">zoom.us / Sales Meeting — Q3 Enterprise Demo</div>
+        <div class="window-title">meet.google.com / Sales Meeting — Q3 Enterprise Demo</div>
         <div class="rec-indicator"><span class="rec-dot"></span><span class="rec-time">REC 02:47</span></div>
       </div>
 
       <div class="video-stage">
-        <!-- Left: vendor video tile + transcript -->
+        <!-- Left: Google Meet-style meeting -->
         <div class="stage-left">
-          <div class="vendor-card">
-            <div class="vendor-avatar">A</div>
-            <div class="vendor-info">
-              <div class="vendor-name">A. 営業（Vendor Inc.）</div>
-              <div class="vendor-co">SALES REPRESENTATIVE</div>
-            </div>
-            <div class="speaking-wave">
-              <span></span><span></span><span></span><span></span><span></span>
+          <div class="meet-header">
+            <div class="meet-title-text">Sales Meeting — Q3 Enterprise Demo</div>
+            <div class="meet-meta">
+              <span class="meet-count">
+                <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                4
+              </span>
+              <span>00:12:47</span>
             </div>
           </div>
 
-          <div class="transcript-area">
-            <div class="transcript-line-v" data-scene="1">
-              "弊社のEnterprise Planは月額¥120,000/seatでございます。<br>業界標準と比べてもお得な価格設定ですよ..."
+          <div class="tile-grid">
+            <!-- Vendor (speaking) -->
+            <div class="tile speaker">
+              <div class="tile-cam" style="--grad: linear-gradient(135deg, #6b4a35 0%, #2b1810 100%);">
+                <div class="tile-initial">A</div>
+              </div>
+              <div class="tile-foot">
+                <span class="tile-mic on"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/></svg></span>
+                <span class="tile-name">A. 営業<em>Vendor Inc.</em></span>
+              </div>
             </div>
-            <div class="transcript-line-v" data-scene="2">
-              "APIも自由にお使いいただけますので、<br>開発のご懸念は無用です。"
+            <!-- Vendor support -->
+            <div class="tile">
+              <div class="tile-cam" style="--grad: linear-gradient(135deg, #4a5a6c 0%, #1a2230 100%);">
+                <div class="tile-initial">T</div>
+              </div>
+              <div class="tile-foot">
+                <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
+                <span class="tile-name">田中 (CS)</span>
+              </div>
             </div>
-            <div class="transcript-line-v" data-scene="3">
-              "解約はいつでも可能です。契約期間の<br>縛りも特にございませんのでご安心を。"
+            <!-- Buyer colleague -->
+            <div class="tile">
+              <div class="tile-cam" style="--grad: linear-gradient(135deg, #5c4a6c 0%, #1f1828 100%);">
+                <div class="tile-initial">Y</div>
+              </div>
+              <div class="tile-foot">
+                <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
+                <span class="tile-name">山田 (情シス)</span>
+              </div>
             </div>
+            <!-- You -->
+            <div class="tile self">
+              <div class="tile-cam" style="--grad: linear-gradient(135deg, #3d5a4a 0%, #14241c 100%);">
+                <div class="tile-initial">T</div>
+              </div>
+              <div class="tile-foot">
+                <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
+                <span class="tile-name">高師<em>(あなた)</em></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Live captions (Meet-style) -->
+          <div class="caption-bar">
+            <div class="caption-line" data-scene="1">
+              <span class="caption-speaker">A. 営業</span>
+              <span class="caption-text">本日は弊社のEnterprise Planで、貴社のSaaSコスト削減を実現するご提案を…</span>
+            </div>
+            <div class="caption-line" data-scene="2">
+              <span class="caption-speaker">A. 営業</span>
+              <span class="caption-text">Enterprise Planは月額¥120,000/seat。業界標準と比べてもお得ですよ。</span>
+            </div>
+            <div class="caption-line" data-scene="3">
+              <span class="caption-speaker">A. 営業</span>
+              <span class="caption-text">APIも自由にお使いいただけますので、開発のご懸念は無用です。</span>
+            </div>
+            <div class="caption-line" data-scene="4">
+              <span class="caption-speaker">A. 営業</span>
+              <span class="caption-text">今期中にご契約いただければ、20%引きで対応できますが…ご決断はいかがでしょう？</span>
+            </div>
+          </div>
+
+          <!-- Meet toolbar -->
+          <div class="meet-toolbar">
+            <button class="tb-btn" aria-label="マイク"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/></svg></button>
+            <button class="tb-btn" aria-label="カメラ"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/></svg></button>
+            <button class="tb-btn" aria-label="画面共有"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg></button>
+            <button class="tb-btn" aria-label="チャット"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg></button>
+            <button class="tb-btn end" aria-label="退出"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 9c-1.6 0-3.15.25-4.6.72v3.1c0 .39-.23.74-.56.9-.98.49-1.87 1.12-2.66 1.85-.18.18-.43.28-.7.28-.28 0-.53-.11-.71-.29L.29 13.08c-.18-.17-.29-.42-.29-.7 0-.28.11-.53.29-.71C3.34 8.78 7.46 7 12 7s8.66 1.78 11.71 4.67c.18.18.29.43.29.71 0 .28-.11.53-.29.71l-2.48 2.48c-.18.18-.43.29-.71.29-.27 0-.52-.1-.7-.28-.79-.74-1.69-1.36-2.67-1.85-.33-.16-.56-.51-.56-.9v-3.1C15.15 9.25 13.6 9 12 9z" transform="rotate(135 12 12)"/></svg></button>
           </div>
         </div>
 
@@ -1018,20 +1196,26 @@
             <span class="second-status">LISTENING</span>
           </div>
           <div class="alert-stream">
-            <div class="v-alert" data-scene="1">
+            <div class="v-alert advisor" data-scene="1">
+              <span class="tag">💭 まず前提を確認</span>
+              あなたが本当に解決したいのは<strong>『SaaSコスト削減』</strong>ではなく、
+              <strong>『部門ごとの過剰購入を止める仕組み』</strong>ではないですか？<br>
+              営業のペースに乗る前に、本来の目的に戻りましょう。
+            </div>
+            <div class="v-alert" data-scene="2">
               <span class="tag">⚑ Pricing alert</span>
               この見積もりは、同規模企業の中央値より <strong>+45%高い</strong>。
               直近3ヶ月で42社が <strong>¥75,000〜¥95,000/seat</strong> で契約しています。
             </div>
-            <div class="v-alert gold" data-scene="2">
+            <div class="v-alert gold" data-scene="3">
               <span class="tag">⚑ Hidden cost</span>
-              このSaaSのAPIには <strong>月10,000リクエスト制限</strong> があります。
-              想定利用量だと、追加で <strong>+¥180,000/月</strong> 発生。
+              このSaaSのAPIには <strong>月10,000リクエスト制限</strong> あり。
+              想定利用量だと、追加で <strong>+¥180,000/月</strong> 発生します。
             </div>
-            <div class="v-alert" data-scene="3">
-              <span class="tag">⚑ Contract risk</span>
-              「いつでも解約可能」は厳密には <strong>12ヶ月前事前通知</strong> が必要。
-              契約書 §8.3 に記載あります。
+            <div class="v-alert pressure" data-scene="4">
+              <span class="tag">🛑 Sales pressure detected</span>
+              「今期中なら20%引き」は<strong>典型的なクロージング技法</strong>。即決の必要はありません。<br>
+              御社の購買フローは3社比較が必須。<strong>持ち帰って72時間</strong>の検討を推奨。
             </div>
           </div>
         </div>
@@ -1040,7 +1224,7 @@
       <div class="video-controls">
         <button class="play-pause" aria-label="再生/停止">❚❚</button>
         <div class="progress" role="progressbar"><div class="progress-fill"></div></div>
-        <div class="time"><span class="time-cur">0:00</span> / 0:30</div>
+        <div class="time"><span class="time-cur">0:00</span> / 0:32</div>
       </div>
     </div>
 
@@ -1048,6 +1232,7 @@
       <button class="scene-dot active" data-jump="1" aria-label="シーン1へ"></button>
       <button class="scene-dot" data-jump="2" aria-label="シーン2へ"></button>
       <button class="scene-dot" data-jump="3" aria-label="シーン3へ"></button>
+      <button class="scene-dot" data-jump="4" aria-label="シーン4へ"></button>
     </div>
   </div>
 </section>
@@ -1308,8 +1493,8 @@
 
   // Demo video: 3-scene loop player
   (function() {
-    const TOTAL_SCENES = 3;
-    const SCENE_MS = 10000;
+    const TOTAL_SCENES = 4;
+    const SCENE_MS = 8000;
     const TOTAL_MS = SCENE_MS * TOTAL_SCENES;
 
     const fill = document.querySelector('.progress-fill');
