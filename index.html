@@ -763,7 +763,20 @@
     inset: 0;
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center 28%;
     z-index: 1;
+    display: block;
+  }
+  /* Subtle "speaking" head bob for the active speaker */
+  .tile.speaker .portrait {
+    animation: speakerBob 1.4s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes speakerBob {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    30%      { transform: translate(0, -0.8px) scale(1.006); }
+    65%      { transform: translate(0.3px, 0.4px) scale(0.997); }
   }
   .portrait-mouth {
     transform-origin: center;
@@ -1208,23 +1221,10 @@
           </div>
 
           <div class="tile-grid">
-            <!-- Vendor A (speaking) - male salaryman with side-parted hair, navy suit -->
+            <!-- Vendor A (speaking) -->
             <div class="tile speaker">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #6b4a35 0%, #2b1810 100%);">
-                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M 10 200 Q 10 156 55 144 L 145 144 Q 190 156 190 200 Z" fill="#1c2940"/>
-                  <path d="M 78 144 L 100 178 L 122 144 Z" fill="#f4f4f0"/>
-                  <path d="M 94 146 L 106 146 L 104 174 L 100 180 L 96 174 Z" fill="#7a1f1f"/>
-                  <path d="M 86 120 L 114 120 L 112 144 L 88 144 Z" fill="#dfb98e"/>
-                  <ellipse cx="100" cy="84" rx="38" ry="46" fill="#eecda5"/>
-                  <path d="M 62 72 Q 60 36 100 36 Q 140 36 140 72 Q 132 56 122 56 Q 110 60 100 56 Q 82 50 70 60 Q 64 65 62 72 Z" fill="#161616"/>
-                  <rect x="78" y="76" width="13" height="2.4" rx="1.2" fill="#161616"/>
-                  <rect x="109" y="76" width="13" height="2.4" rx="1.2" fill="#161616"/>
-                  <ellipse class="portrait-eye" cx="85" cy="86" rx="2.4" ry="3.2" fill="#161616"/>
-                  <ellipse class="portrait-eye" cx="115" cy="86" rx="2.4" ry="3.2" fill="#161616"/>
-                  <path d="M 100 94 Q 96 105 100 108 Q 104 105 100 94" fill="#d4ad84" opacity="0.7"/>
-                  <ellipse class="portrait-mouth" cx="100" cy="114" rx="7" ry="2.5" fill="#6e2e2e"/>
-                </svg>
+                <img class="portrait" src="faces/a.jpg" alt="A. 営業" loading="lazy">
               </div>
               <div class="tile-foot">
                 <span class="tile-mic on"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/></svg></span>
@@ -1233,23 +1233,10 @@
               </div>
             </div>
 
-            <!-- Tanaka (female CS, long hair, cream blouse) -->
+            <!-- Tanaka (CS) -->
             <div class="tile">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #4a5a6c 0%, #1a2230 100%);">
-                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-                  <ellipse cx="100" cy="100" rx="54" ry="60" fill="#0e0e0e"/>
-                  <path d="M 10 200 Q 10 160 55 148 L 145 148 Q 190 160 190 200 Z" fill="#e6d6bc"/>
-                  <path d="M 80 148 Q 100 168 120 148" stroke="#b89e7a" stroke-width="2.4" fill="none"/>
-                  <path d="M 88 122 L 112 122 L 110 148 L 90 148 Z" fill="#dfb98e"/>
-                  <ellipse cx="100" cy="88" rx="36" ry="44" fill="#eecda5"/>
-                  <path d="M 64 78 Q 70 50 100 46 Q 130 50 136 78 Q 128 64 116 64 Q 100 72 84 64 Q 70 66 64 78 Z" fill="#161616"/>
-                  <path d="M 79 82 Q 85 80 91 82" stroke="#161616" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-                  <path d="M 109 82 Q 115 80 121 82" stroke="#161616" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-                  <ellipse class="portrait-eye" cx="85" cy="90" rx="2.4" ry="3.2" fill="#161616"/>
-                  <ellipse class="portrait-eye" cx="115" cy="90" rx="2.4" ry="3.2" fill="#161616"/>
-                  <path d="M 100 100 Q 96 110 100 112 Q 104 110 100 100" fill="#d4ad84" opacity="0.6"/>
-                  <path d="M 91 118 Q 100 122 109 118" stroke="#8a3232" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-                </svg>
+                <img class="portrait" src="faces/t.jpg" alt="田中" loading="lazy">
               </div>
               <div class="tile-foot">
                 <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
@@ -1257,25 +1244,10 @@
               </div>
             </div>
 
-            <!-- Yamada (male IT, glasses, casual shirt) -->
+            <!-- Yamada (IT) -->
             <div class="tile">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #5c4a6c 0%, #1f1828 100%);">
-                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M 10 200 Q 10 158 55 146 L 145 146 Q 190 158 190 200 Z" fill="#34404a"/>
-                  <path d="M 82 146 L 100 168 L 118 146 Z" fill="#252e36"/>
-                  <path d="M 86 120 L 114 120 L 112 146 L 88 146 Z" fill="#dfb98e"/>
-                  <ellipse cx="100" cy="86" rx="37" ry="44" fill="#eecda5"/>
-                  <path d="M 63 72 Q 65 40 100 38 Q 138 40 138 72 Q 130 56 122 60 Q 110 50 100 54 Q 86 50 78 60 Q 70 60 63 72 Z" fill="#161616"/>
-                  <circle cx="85" cy="91" r="10" stroke="#2a2a2a" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
-                  <circle cx="115" cy="91" r="10" stroke="#2a2a2a" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
-                  <line x1="95" y1="91" x2="105" y2="91" stroke="#2a2a2a" stroke-width="2"/>
-                  <rect x="78" y="80" width="13" height="2" rx="1" fill="#161616"/>
-                  <rect x="109" y="80" width="13" height="2" rx="1" fill="#161616"/>
-                  <ellipse class="portrait-eye" cx="85" cy="92" rx="2" ry="2.6" fill="#161616"/>
-                  <ellipse class="portrait-eye" cx="115" cy="92" rx="2" ry="2.6" fill="#161616"/>
-                  <path d="M 100 102 Q 96 112 100 114 Q 104 112 100 102" fill="#d4ad84" opacity="0.6"/>
-                  <path d="M 92 120 L 108 120" stroke="#5a2828" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+                <img class="portrait" src="faces/y.jpg" alt="山田" loading="lazy">
               </div>
               <div class="tile-foot">
                 <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
@@ -1283,22 +1255,10 @@
               </div>
             </div>
 
-            <!-- Takashi (you, male, business casual) -->
+            <!-- Takashi (you) -->
             <div class="tile self">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #3d5a4a 0%, #14241c 100%);">
-                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M 10 200 Q 10 158 55 146 L 145 146 Q 190 158 190 200 Z" fill="#3e4a55"/>
-                  <path d="M 80 146 L 100 170 L 120 146 Z" fill="#2c343c"/>
-                  <path d="M 86 120 L 114 120 L 112 146 L 88 146 Z" fill="#dfb98e"/>
-                  <ellipse cx="100" cy="84" rx="38" ry="46" fill="#eecda5"/>
-                  <path d="M 62 70 Q 60 34 100 34 Q 140 34 140 70 Q 132 54 110 54 Q 96 60 80 56 Q 68 62 62 70 Z" fill="#161616"/>
-                  <rect x="78" y="76" width="13" height="2.6" rx="1.3" fill="#161616"/>
-                  <rect x="109" y="76" width="13" height="2.6" rx="1.3" fill="#161616"/>
-                  <ellipse class="portrait-eye" cx="85" cy="86" rx="2.5" ry="3.3" fill="#161616"/>
-                  <ellipse class="portrait-eye" cx="115" cy="86" rx="2.5" ry="3.3" fill="#161616"/>
-                  <path d="M 100 94 Q 96 106 100 109 Q 104 106 100 94" fill="#d4ad84" opacity="0.7"/>
-                  <path d="M 92 116 Q 100 119 108 116" stroke="#6a2a2a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-                </svg>
+                <img class="portrait" src="faces/you.jpg" alt="高師" loading="lazy">
               </div>
               <div class="tile-foot">
                 <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
