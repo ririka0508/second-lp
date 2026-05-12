@@ -1152,6 +1152,200 @@
     .video-chrome { padding: 10px 14px; gap: 12px; }
     .video-controls { padding: 10px 14px; gap: 10px; }
   }
+
+  /* ============= Knowledge / data sources section ============= */
+  .knowledge-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line);
+    margin-top: 32px;
+  }
+  .knowledge-col {
+    padding: 56px 40px;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .knowledge-col:last-child { border-right: none; padding-right: 0; }
+  .knowledge-col:first-child { padding-left: 0; }
+  .k-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--crimson);
+    margin-bottom: 22px;
+  }
+  .knowledge-col.market .k-label { color: var(--gold); }
+  .k-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-weight: 700;
+    font-size: 28px;
+    line-height: 1.45;
+    margin-bottom: 18px;
+  }
+  .k-title .accent {
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    color: var(--crimson);
+  }
+  .knowledge-col.market .k-title .accent { color: var(--gold); }
+  .k-desc {
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+  .k-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 32px;
+  }
+  .k-list li {
+    font-size: 13px;
+    line-height: 1.65;
+    padding: 12px 0;
+    border-bottom: 1px dotted var(--line);
+    color: var(--ink-soft);
+    display: flex;
+    gap: 12px;
+  }
+  .k-list li:last-child { border-bottom: none; }
+  .k-list li::before {
+    content: '＋';
+    color: var(--crimson);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+  .knowledge-col.market .k-list li::before { color: var(--gold); }
+  .k-list strong { color: var(--ink); font-weight: 700; }
+  .k-connectors-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    margin-bottom: 12px;
+  }
+  .k-connectors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .k-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 13px;
+    background: var(--bg-paper);
+    border: 1px solid var(--line);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+  }
+  .knowledge-col.market .k-chip {
+    border-color: rgba(139, 111, 46, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .knowledge-grid { grid-template-columns: 1fr; }
+    .knowledge-col {
+      padding: 36px 0 !important;
+      border-right: none;
+      border-bottom: 1px solid var(--line);
+    }
+    .knowledge-col:last-child { border-bottom: none; }
+    .k-title { font-size: 22px; }
+  }
+
+  /* Input flow */
+  .input-flow {
+    margin-top: 56px;
+    padding-top: 48px;
+    border-top: 1px solid var(--line);
+  }
+  .input-flow-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--ink-mute);
+    margin-bottom: 28px;
+  }
+  .flow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+    position: relative;
+  }
+  .flow-step {
+    background: var(--bg-paper);
+    border: 1px solid var(--line);
+    padding: 32px 28px;
+    position: relative;
+  }
+  .flow-step-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 28px;
+    color: var(--crimson);
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+  .flow-step-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--ink-mute);
+    margin-bottom: 16px;
+  }
+  .flow-step-title {
+    font-family: 'Shippori Mincho B1', serif;
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.45;
+    margin-bottom: 14px;
+  }
+  .flow-step-body {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+  }
+  .flow-step-body strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .flow-step + .flow-step::before {
+    content: '→';
+    position: absolute;
+    left: -22px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    color: var(--ink-mute);
+    z-index: 2;
+  }
+  .flow-note {
+    margin-top: 32px;
+    padding: 16px 20px;
+    background: var(--bg-paper);
+    border-left: 2px solid var(--gold);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .flow-note strong { color: var(--ink); font-weight: 700; }
+  @media (max-width: 768px) {
+    .flow-grid { grid-template-columns: 1fr; gap: 16px; }
+    .flow-step + .flow-step::before {
+      left: 50%;
+      top: -16px;
+      transform: translateX(-50%) rotate(90deg);
+      font-size: 20px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -1345,10 +1539,93 @@
   </div>
 </section>
 
+<!-- WHY IT WORKS — Knowledge sources -->
+<section id="why">
+  <div class="container">
+    <div class="section-label"><span class="num">01</span>HOW SECOND KNOWS</div>
+    <h2 class="section-title">的確な助言には、<br>二つの<span class="accent" style="font-style:italic; font-family:'Cormorant Garamond',serif; font-weight:400; color:var(--crimson);">knowledge</span>が要る。</h2>
+    <p class="section-desc">Second は「賢いAI」ではない。御社の<em style="font-style:normal; background:var(--highlight); padding:0 4px;">社内事情</em>と、<em style="font-style:normal; background:var(--highlight); padding:0 4px;">市場の実勢</em>を、両方知っているからこそ、はじめて意味のある助言ができる。</p>
+
+    <div class="knowledge-grid">
+      <!-- Internal context -->
+      <div class="knowledge-col internal">
+        <div class="k-label">▎ INTERNAL CONTEXT</div>
+        <h3 class="k-title">あなたの会社のことを、<br><span class="accent">知っている。</span></h3>
+        <p class="k-desc">過去のSaaS契約、部門ごとの利用実態、稟議の決裁ライン、経営の重点投資領域。Second は商談前に、御社の状況を読み込んでから席に着く。</p>
+        <ul class="k-list">
+          <li><span><strong>過去の購買履歴</strong>と既存契約条項のサマリ</span></li>
+          <li><span><strong>部門ごとのSaaS利用実態</strong>と重複/未使用ライセンス</span></li>
+          <li><span><strong>稟議フロー</strong>と決裁権限・購買ガイドライン</span></li>
+          <li><span><strong>経営の重点投資領域</strong>と当期の戦略テーマ</span></li>
+        </ul>
+        <div class="k-connectors-label">▸ CONNECTED VIA</div>
+        <div class="k-connectors">
+          <span class="k-chip">Notion</span>
+          <span class="k-chip">Slack</span>
+          <span class="k-chip">Google Workspace</span>
+          <span class="k-chip">契約管理 SaaS</span>
+          <span class="k-chip">経費管理</span>
+          <span class="k-chip">HR システム</span>
+        </div>
+      </div>
+
+      <!-- Market intelligence -->
+      <div class="knowledge-col market">
+        <div class="k-label">▎ MARKET INTELLIGENCE</div>
+        <h3 class="k-title">世の中のサービスを、<br><span class="accent">知り尽くしている。</span></h3>
+        <p class="k-desc">同規模企業の実契約価格、ベンダー別の隠れコスト、競合プロダクトの機能カバレッジ、営業のクロージング技法パターン。匿名化された実データで、市場のリアルを Second は持つ。</p>
+        <ul class="k-list">
+          <li><span><strong>同規模・同業種の実契約価格</strong>の中央値と分布</span></li>
+          <li><span><strong>隠れコストの構造</strong>（API・SSO・追加課金・解約条件）</span></li>
+          <li><span><strong>競合プロダクト</strong>の機能カバレッジ・価格・実装難易度</span></li>
+          <li><span><strong>営業の話法と契約条項</strong>のパターン辞書</span></li>
+        </ul>
+        <div class="k-connectors-label">▸ DRAWN FROM</div>
+        <div class="k-connectors">
+          <span class="k-chip">実契約 DB</span>
+          <span class="k-chip">業界レポート</span>
+          <span class="k-chip">公開価格表</span>
+          <span class="k-chip">G2 / Gartner</span>
+          <span class="k-chip">ベンダー研究</span>
+          <span class="k-chip">過去商談ログ</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input flow: 3-tier onboarding -->
+    <div class="input-flow">
+      <div class="input-flow-label">▸ INPUT FLOW — どうやって社内事情をインプットするか</div>
+      <div class="flow-grid">
+        <div class="flow-step">
+          <div class="flow-step-num">i.</div>
+          <div class="flow-step-meta">~ 5 MIN · 商談ごと</div>
+          <h4 class="flow-step-title">商談前 5 分の<br>ブリーフ</h4>
+          <p class="flow-step-body">Slack または Web で<strong>「今日の商談は何？目的・予算・過去の経緯」</strong>だけ即答。これだけで初日から使える。</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">ii.</div>
+          <div class="flow-step-meta">~ 3 DAYS · 任意</div>
+          <h4 class="flow-step-title">資料アップで<br>精度を上げる</h4>
+          <p class="flow-step-body">過去契約PDF・SaaS利用一覧・組織図を投げ込むと、Second が読み込んで構造化。<strong>価格交渉の引き出しが一気に増える。</strong></p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-num">iii.</div>
+          <div class="flow-step-meta">~ 1 WEEK · 推奨</div>
+          <h4 class="flow-step-title">連携で<br>常時学習</h4>
+          <p class="flow-step-body">Notion / Google Workspace / Slack に <strong>read-only で連携</strong>。商談のたびに最新の社内事情を引き、精度が自動で積み上がる。</p>
+        </div>
+      </div>
+      <div class="flow-note">
+        ※ すべて <strong>read-only</strong>。Second はあなたの社内データに書き込まない。閲覧と推論のみ。
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FEATURE 1: Real-time meeting demo -->
 <section id="feature">
   <div class="container">
-    <div class="section-label"><span class="num">01</span>REAL-TIME CO-PILOT</div>
+    <div class="section-label"><span class="num">02</span>REAL-TIME CO-PILOT</div>
     <h2 class="section-title">商談の隣で、<br>静かに検証する。</h2>
     <p class="section-desc">
       Zoom・Google Meet・Teamsに参加。商談中、ベンダーの説明をリアルタイムで聴き取り、
@@ -1408,7 +1685,7 @@
 <!-- FEATURE 2: Three pillars -->
 <section id="how">
   <div class="container">
-    <div class="section-label"><span class="num">02</span>WHAT SECOND DOES</div>
+    <div class="section-label"><span class="num">03</span>WHAT SECOND DOES</div>
     <h2 class="section-title">買い手の情報非対称性を、<br>埋める三つの機能。</h2>
 
     <div class="feature-grid">
@@ -1466,7 +1743,7 @@
 <!-- FEATURE 3: Post-meeting -->
 <section>
   <div class="container">
-    <div class="section-label"><span class="num">03</span>POST-MEETING REPORT</div>
+    <div class="section-label"><span class="num">04</span>POST-MEETING REPORT</div>
     <h2 class="section-title">商談が終わると、<br>議事録と評価が届く。</h2>
     <p class="section-desc">
       商談終了から3分後、Slack/メールに完全な議事録、評価レポート、
@@ -1520,7 +1797,7 @@
 <!-- FAQ -->
 <section id="faq">
   <div class="container">
-    <div class="section-label"><span class="num">04</span>FREQUENTLY ASKED</div>
+    <div class="section-label"><span class="num">05</span>FREQUENTLY ASKED</div>
     <h2 class="section-title">よくある質問。</h2>
 
     <div style="max-width: 760px;">
@@ -1576,7 +1853,7 @@
 <!-- Final CTA -->
 <section class="final-cta" id="cta">
   <div class="container">
-    <div class="section-label"><span class="num">05</span>JOIN THE WAITLIST</div>
+    <div class="section-label"><span class="num">06</span>JOIN THE WAITLIST</div>
     <h2>次の商談、<br>もう一人連れていく？</h2>
     <a href="#" class="btn-primary">ウェイトリストに登録 →</a>
     <p style="margin-top: 32px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: rgba(250,248,243,0.5);">
