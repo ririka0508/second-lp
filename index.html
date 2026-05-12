@@ -616,6 +616,319 @@
     }
     .cta-group { flex-direction: column; align-items: flex-start; gap: 12px; }
   }
+
+  /* ============= Demo video section ============= */
+  .demo-video-section {
+    background: var(--bg-paper);
+    border-top: 1px solid var(--line);
+    padding: 120px 0;
+  }
+  .video-frame {
+    background: #0a0a0a;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(10,10,10,0.18), 0 8px 24px rgba(10,10,10,0.12);
+    margin-top: 48px;
+    position: relative;
+  }
+  .video-chrome {
+    background: #1a1a1a;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .window-buttons { display: flex; gap: 8px; }
+  .window-buttons span {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #4a4a4a;
+  }
+  .window-buttons span:nth-child(1) { background: #ff5f57; }
+  .window-buttons span:nth-child(2) { background: #febc2e; }
+  .window-buttons span:nth-child(3) { background: #28c840; }
+  .window-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: #888;
+    letter-spacing: 0.12em;
+    flex: 1;
+    text-align: center;
+  }
+  .rec-indicator {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rec-indicator .rec-dot {
+    width: 6px; height: 6px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: pulse 1.6s infinite;
+  }
+
+  .video-stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 440px;
+    background: #0e0e10;
+  }
+
+  /* Left: vendor side */
+  .stage-left {
+    padding: 32px;
+    border-right: 1px solid #2a2a2a;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .vendor-card {
+    background: linear-gradient(135deg, #2a2520 0%, #1a1818 100%);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .vendor-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #b91c1c, #8b6f2e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    color: #faf8f3;
+    flex-shrink: 0;
+  }
+  .vendor-info { flex: 1; min-width: 0; }
+  .vendor-name {
+    font-size: 14px;
+    color: #e8e8e8;
+    font-weight: 500;
+  }
+  .vendor-co {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.12em;
+    margin-top: 4px;
+  }
+  .speaking-wave {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 24px;
+  }
+  .speaking-wave span {
+    display: block;
+    width: 3px;
+    background: #ef4444;
+    border-radius: 1px;
+    animation: wave 0.9s ease-in-out infinite;
+  }
+  .speaking-wave span:nth-child(1) { height: 10px; animation-delay: 0s; }
+  .speaking-wave span:nth-child(2) { height: 18px; animation-delay: 0.15s; }
+  .speaking-wave span:nth-child(3) { height: 22px; animation-delay: 0.3s; }
+  .speaking-wave span:nth-child(4) { height: 14px; animation-delay: 0.45s; }
+  .speaking-wave span:nth-child(5) { height: 8px;  animation-delay: 0.6s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.4); }
+    50% { transform: scaleY(1); }
+  }
+
+  .transcript-area {
+    background: #161616;
+    border-radius: 6px;
+    padding: 18px 20px;
+    flex: 1;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    line-height: 1.85;
+    color: #d8d2c5;
+    position: relative;
+    min-height: 160px;
+  }
+  .transcript-area::before {
+    content: '▸ TRANSCRIPT / VENDOR';
+    display: block;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: #555;
+    margin-bottom: 14px;
+  }
+  .transcript-line-v {
+    display: none;
+  }
+  .transcript-line-v.active {
+    display: block;
+    animation: typeIn 0.6s ease-out forwards;
+  }
+  @keyframes typeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Right: Second side */
+  .stage-right {
+    padding: 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #fafafa;
+    color: #0a0a0a;
+  }
+  .second-logo-mini {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .second-logo-mini .second-brand::after {
+    content: '.';
+    color: var(--crimson);
+  }
+  .second-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .second-status::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--crimson);
+    animation: pulse 1.6s infinite;
+  }
+  .alert-stream {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .v-alert {
+    background: var(--bg-paper);
+    border-left: 3px solid var(--crimson);
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.65;
+    display: none;
+  }
+  .v-alert.gold { border-left-color: var(--gold); }
+  .v-alert.active {
+    display: block;
+    animation: alertIn 0.6s ease-out forwards;
+  }
+  @keyframes alertIn {
+    from { opacity: 0; transform: translateX(16px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .v-alert .tag {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--crimson);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .v-alert.gold .tag { color: var(--gold); }
+  .v-alert strong {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* Video controls */
+  .video-controls {
+    background: #1a1a1a;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-top: 1px solid #2a2a2a;
+  }
+  .play-pause {
+    background: transparent;
+    border: 1px solid #3a3a3a;
+    color: #e8e8e8;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 3px;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.2s;
+    min-width: 36px;
+  }
+  .play-pause:hover { background: #2a2a2a; border-color: #555; }
+  .progress {
+    flex: 1;
+    height: 3px;
+    background: #2a2a2a;
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .progress-fill {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    background: var(--crimson);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+  .time {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.12em;
+    min-width: 76px;
+    text-align: right;
+  }
+  .scene-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 28px;
+  }
+  .scene-dot {
+    width: 36px;
+    height: 2px;
+    background: var(--line);
+    cursor: pointer;
+    transition: background 0.3s;
+    border: none;
+    padding: 0;
+  }
+  .scene-dot.active { background: var(--crimson); }
+  .scene-dot:hover { background: var(--ink-soft); }
+
+  @media (max-width: 768px) {
+    .demo-video-section { padding: 80px 0; }
+    .video-stage { grid-template-columns: 1fr; min-height: auto; }
+    .stage-left {
+      border-right: none;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .window-title { display: none; }
+    .video-chrome { padding: 10px 14px; gap: 12px; }
+    .video-controls { padding: 10px 14px; gap: 10px; }
+  }
 </style>
 </head>
 <body>
@@ -653,6 +966,88 @@
 
     <div class="hero-deco">
       <p>営業の<br>言うことは、<br>本当ですか。</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO VIDEO -->
+<section class="demo-video-section" id="demo">
+  <div class="container">
+    <div class="section-label"><span class="num">00</span>30-SECOND DEMO</div>
+    <h2 class="section-title">商談中、こう動く。</h2>
+    <p class="section-desc">ベンダーの説明をリアルタイムで聴き、買い手だけに見えるサイドパネルに気づきを差し込む。30秒で全体像が掴めます。</p>
+
+    <div class="video-frame">
+      <div class="video-chrome">
+        <div class="window-buttons"><span></span><span></span><span></span></div>
+        <div class="window-title">zoom.us / Sales Meeting — Q3 Enterprise Demo</div>
+        <div class="rec-indicator"><span class="rec-dot"></span><span class="rec-time">REC 02:47</span></div>
+      </div>
+
+      <div class="video-stage">
+        <!-- Left: vendor video tile + transcript -->
+        <div class="stage-left">
+          <div class="vendor-card">
+            <div class="vendor-avatar">A</div>
+            <div class="vendor-info">
+              <div class="vendor-name">A. 営業（Vendor Inc.）</div>
+              <div class="vendor-co">SALES REPRESENTATIVE</div>
+            </div>
+            <div class="speaking-wave">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <div class="transcript-area">
+            <div class="transcript-line-v" data-scene="1">
+              "弊社のEnterprise Planは月額¥120,000/seatでございます。<br>業界標準と比べてもお得な価格設定ですよ..."
+            </div>
+            <div class="transcript-line-v" data-scene="2">
+              "APIも自由にお使いいただけますので、<br>開発のご懸念は無用です。"
+            </div>
+            <div class="transcript-line-v" data-scene="3">
+              "解約はいつでも可能です。契約期間の<br>縛りも特にございませんのでご安心を。"
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Second's panel -->
+        <div class="stage-right">
+          <div class="second-logo-mini">
+            <span class="second-brand">Second</span>
+            <span class="second-status">LISTENING</span>
+          </div>
+          <div class="alert-stream">
+            <div class="v-alert" data-scene="1">
+              <span class="tag">⚑ Pricing alert</span>
+              この見積もりは、同規模企業の中央値より <strong>+45%高い</strong>。
+              直近3ヶ月で42社が <strong>¥75,000〜¥95,000/seat</strong> で契約しています。
+            </div>
+            <div class="v-alert gold" data-scene="2">
+              <span class="tag">⚑ Hidden cost</span>
+              このSaaSのAPIには <strong>月10,000リクエスト制限</strong> があります。
+              想定利用量だと、追加で <strong>+¥180,000/月</strong> 発生。
+            </div>
+            <div class="v-alert" data-scene="3">
+              <span class="tag">⚑ Contract risk</span>
+              「いつでも解約可能」は厳密には <strong>12ヶ月前事前通知</strong> が必要。
+              契約書 §8.3 に記載あります。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="video-controls">
+        <button class="play-pause" aria-label="再生/停止">❚❚</button>
+        <div class="progress" role="progressbar"><div class="progress-fill"></div></div>
+        <div class="time"><span class="time-cur">0:00</span> / 0:30</div>
+      </div>
+    </div>
+
+    <div class="scene-dots">
+      <button class="scene-dot active" data-jump="1" aria-label="シーン1へ"></button>
+      <button class="scene-dot" data-jump="2" aria-label="シーン2へ"></button>
+      <button class="scene-dot" data-jump="3" aria-label="シーン3へ"></button>
     </div>
   </div>
 </section>
@@ -910,6 +1305,109 @@
       item.classList.toggle('open');
     });
   });
+
+  // Demo video: 3-scene loop player
+  (function() {
+    const TOTAL_SCENES = 3;
+    const SCENE_MS = 10000;
+    const TOTAL_MS = SCENE_MS * TOTAL_SCENES;
+
+    const fill = document.querySelector('.progress-fill');
+    const timeCur = document.querySelector('.time-cur');
+    const recTime = document.querySelector('.rec-time');
+    const playPause = document.querySelector('.play-pause');
+    const progressBar = document.querySelector('.progress');
+    const dots = document.querySelectorAll('.scene-dot');
+    if (!fill) return;
+
+    let elapsed = 0;
+    let currentScene = 0;
+    let playing = true;
+    let lastTick = performance.now();
+    let rafId = null;
+
+    function fmt(ms) {
+      const s = Math.floor(ms / 1000);
+      return '0:' + String(s).padStart(2, '0');
+    }
+    function fmtRec(ms) {
+      const total = 167 + Math.floor(ms / 1000); // start from 02:47
+      const m = Math.floor(total / 60);
+      const s = total % 60;
+      return 'REC ' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+
+    function showScene(n) {
+      if (n === currentScene) return;
+      currentScene = n;
+      document.querySelectorAll('[data-scene]').forEach(el => {
+        el.classList.toggle('active', parseInt(el.dataset.scene, 10) === n);
+      });
+      dots.forEach((d, i) => d.classList.toggle('active', (i + 1) === n));
+    }
+
+    function render() {
+      const pct = (elapsed / TOTAL_MS) * 100;
+      fill.style.width = pct + '%';
+      timeCur.textContent = fmt(elapsed);
+      if (recTime) recTime.textContent = fmtRec(elapsed);
+      const sceneIdx = Math.min(TOTAL_SCENES, Math.floor(elapsed / SCENE_MS) + 1);
+      showScene(sceneIdx);
+    }
+
+    function tick(now) {
+      if (!playing) return;
+      const delta = now - lastTick;
+      lastTick = now;
+      elapsed = (elapsed + delta) % TOTAL_MS;
+      render();
+      rafId = requestAnimationFrame(tick);
+    }
+
+    playPause.addEventListener('click', () => {
+      playing = !playing;
+      playPause.textContent = playing ? '❚❚' : '▶';
+      if (playing) {
+        lastTick = performance.now();
+        rafId = requestAnimationFrame(tick);
+      } else {
+        cancelAnimationFrame(rafId);
+      }
+    });
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        elapsed = i * SCENE_MS;
+        render();
+      });
+    });
+
+    progressBar.addEventListener('click', (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const ratio = (e.clientX - rect.left) / rect.width;
+      elapsed = Math.max(0, Math.min(0.999, ratio)) * TOTAL_MS;
+      render();
+    });
+
+    // Pause when out of view (perf + battery)
+    if ('IntersectionObserver' in window) {
+      const frame = document.querySelector('.video-frame');
+      new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (!playing) return;
+          if (en.isIntersecting) {
+            lastTick = performance.now();
+            rafId = requestAnimationFrame(tick);
+          } else {
+            cancelAnimationFrame(rafId);
+          }
+        });
+      }, { threshold: 0.1 }).observe(frame);
+    }
+
+    showScene(1);
+    rafId = requestAnimationFrame(tick);
+  })();
 </script>
 
 </body>
