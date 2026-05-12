@@ -1259,6 +1259,185 @@
     .k-title { font-size: 22px; }
   }
 
+  /* ============= Sync canvas (logos connecting to Second hub) ============= */
+  .sync-canvas {
+    position: relative;
+    max-width: 1080px;
+    margin: 56px auto 40px;
+    height: 480px;
+  }
+  .sync-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .sync-lines line {
+    stroke: var(--line);
+    stroke-width: 1.2;
+    opacity: 0.55;
+    transition: stroke 0.35s ease, stroke-width 0.35s ease, opacity 0.35s ease;
+  }
+  .sync-lines line.active {
+    stroke: var(--crimson);
+    stroke-width: 1.8;
+    opacity: 1;
+  }
+  .sync-lines line[data-side="market"].active { stroke: var(--gold); }
+
+  .sync-hub {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 156px;
+    height: 156px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 24px 60px rgba(10,10,10,0.18), 0 0 0 1px rgba(10,10,10,0.05);
+    z-index: 4;
+  }
+  .sync-hub-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(250,248,243,0.5);
+    margin-bottom: 4px;
+  }
+  .sync-hub-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .sync-hub-name::after {
+    content: '.';
+    color: var(--crimson);
+  }
+  .sync-hub-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: rgba(250,248,243,0.55);
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .sync-hub-status::before {
+    content: '';
+    width: 5px; height: 5px;
+    background: #34a853;
+    border-radius: 50%;
+    animation: pulse 1.6s infinite;
+  }
+  .sync-hub-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 1.5px solid var(--crimson);
+    opacity: 0;
+    animation: hubRing 3s ease-out infinite;
+    pointer-events: none;
+  }
+  .sync-hub-ring:nth-of-type(2) { animation-delay: 1.5s; }
+  @keyframes hubRing {
+    0%   { transform: scale(1);   opacity: 0.55; }
+    100% { transform: scale(1.4); opacity: 0; }
+  }
+
+  .sync-logo {
+    position: absolute;
+    left: var(--lx);
+    top: var(--ly);
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 12px 7px 7px;
+    box-shadow: 0 4px 14px rgba(10,10,10,0.07);
+    z-index: 3;
+    white-space: nowrap;
+    animation: logoIdle 4.5s ease-in-out infinite;
+  }
+  .sync-logo:nth-child(odd)  { animation-delay: 1.4s; }
+  .sync-logo:nth-child(3n)   { animation-delay: 2.6s; }
+  @keyframes logoIdle {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%      { transform: translate(-50%, -50%) scale(1.02); }
+  }
+  .sync-logo.syncing {
+    animation: logoSync 0.75s ease-out;
+    z-index: 6;
+  }
+  .sync-logo.market.syncing { animation-name: logoSyncGold; }
+  @keyframes logoSync {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);    box-shadow: 0 4px 14px rgba(10,10,10,0.07); }
+    35%      { transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 0 0 5px rgba(185,28,28,0.18), 0 10px 28px rgba(10,10,10,0.16); }
+  }
+  @keyframes logoSyncGold {
+    0%, 100% { transform: translate(-50%, -50%) scale(1);    box-shadow: 0 4px 14px rgba(10,10,10,0.07); }
+    35%      { transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 0 0 5px rgba(139,111,46,0.22), 0 10px 28px rgba(10,10,10,0.16); }
+  }
+  .sync-logo-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0;
+    flex-shrink: 0;
+  }
+  .sync-logo-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 768px) {
+    .sync-canvas {
+      height: auto;
+      margin: 32px 0;
+      padding: 24px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .sync-lines { display: none; }
+    .sync-hub {
+      position: relative;
+      left: auto; top: auto;
+      transform: none;
+      width: 130px; height: 130px;
+      order: -1;
+      margin-bottom: 16px;
+    }
+    .sync-logo {
+      position: relative;
+      left: auto; top: auto;
+      transform: none;
+      animation: none;
+      flex: 0 0 auto;
+    }
+    .sync-logo.syncing { animation: none; transform: scale(1.05); }
+  }
+
   /* Input flow */
   .input-flow {
     margin-top: 56px;
@@ -1546,6 +1725,74 @@
     <h2 class="section-title">的確な助言には、<br>二つの<span class="accent" style="font-style:italic; font-family:'Cormorant Garamond',serif; font-weight:400; color:var(--crimson);">knowledge</span>が要る。</h2>
     <p class="section-desc">Second は「賢いAI」ではない。御社の<em style="font-style:normal; background:var(--highlight); padding:0 4px;">社内事情</em>と、<em style="font-style:normal; background:var(--highlight); padding:0 4px;">市場の実勢</em>を、両方知っているからこそ、はじめて意味のある助言ができる。</p>
 
+    <!-- Animated sync canvas: services linking to Second hub -->
+    <div class="sync-canvas" aria-hidden="true">
+      <svg class="sync-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <line id="sl-1"  data-side="internal" x1="14" y1="20" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-2"  data-side="internal" x1="7"  y1="50" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-3"  data-side="internal" x1="14" y1="80" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-4"  data-side="internal" x1="30" y1="8"  x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-5"  data-side="internal" x1="30" y1="92" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-6"  data-side="market"   x1="86" y1="20" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-7"  data-side="market"   x1="93" y1="50" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-8"  data-side="market"   x1="86" y1="80" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-9"  data-side="market"   x1="70" y1="8"  x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+        <line id="sl-10" data-side="market"   x1="70" y1="92" x2="50" y2="50" vector-effect="non-scaling-stroke"/>
+      </svg>
+
+      <div class="sync-hub">
+        <div class="sync-hub-label">CO-PILOT</div>
+        <div class="sync-hub-name">Second</div>
+        <div class="sync-hub-status">SYNCING</div>
+        <div class="sync-hub-ring"></div>
+        <div class="sync-hub-ring"></div>
+      </div>
+
+      <!-- Internal logos -->
+      <div class="sync-logo internal" style="--lx:14%; --ly:20%;" data-line="sl-1">
+        <span class="sync-logo-icon" style="background:#000;">N</span>
+        <span class="sync-logo-name">Notion</span>
+      </div>
+      <div class="sync-logo internal" style="--lx:7%; --ly:50%;" data-line="sl-2">
+        <span class="sync-logo-icon" style="background:#4A154B;">#</span>
+        <span class="sync-logo-name">Slack</span>
+      </div>
+      <div class="sync-logo internal" style="--lx:14%; --ly:80%;" data-line="sl-3">
+        <span class="sync-logo-icon" style="background:#4285F4;">G</span>
+        <span class="sync-logo-name">Workspace</span>
+      </div>
+      <div class="sync-logo internal" style="--lx:30%; --ly:8%;" data-line="sl-4">
+        <span class="sync-logo-icon" style="background:#FF7A59;">H</span>
+        <span class="sync-logo-name">HubSpot</span>
+      </div>
+      <div class="sync-logo internal" style="--lx:30%; --ly:92%;" data-line="sl-5">
+        <span class="sync-logo-icon" style="background:#00A1E0;">SF</span>
+        <span class="sync-logo-name">Salesforce</span>
+      </div>
+
+      <!-- Market logos -->
+      <div class="sync-logo market" style="--lx:86%; --ly:20%;" data-line="sl-6">
+        <span class="sync-logo-icon" style="background:#FF492C;">G2</span>
+        <span class="sync-logo-name">G2</span>
+      </div>
+      <div class="sync-logo market" style="--lx:93%; --ly:50%;" data-line="sl-7">
+        <span class="sync-logo-icon" style="background:#0A66C2;">in</span>
+        <span class="sync-logo-name">LinkedIn</span>
+      </div>
+      <div class="sync-logo market" style="--lx:86%; --ly:80%;" data-line="sl-8">
+        <span class="sync-logo-icon" style="background:#003D6A;">G.</span>
+        <span class="sync-logo-name">Gartner</span>
+      </div>
+      <div class="sync-logo market" style="--lx:70%; --ly:8%;" data-line="sl-9">
+        <span class="sync-logo-icon" style="background:#FF6900;">Cp</span>
+        <span class="sync-logo-name">Capterra</span>
+      </div>
+      <div class="sync-logo market" style="--lx:70%; --ly:92%;" data-line="sl-10">
+        <span class="sync-logo-icon" style="background:#146AFF;">Cb</span>
+        <span class="sync-logo-name">Crunchbase</span>
+      </div>
+    </div>
+
     <div class="knowledge-grid">
       <!-- Internal context -->
       <div class="knowledge-col internal">
@@ -1558,15 +1805,6 @@
           <li><span><strong>稟議フロー</strong>と決裁権限・購買ガイドライン</span></li>
           <li><span><strong>経営の重点投資領域</strong>と当期の戦略テーマ</span></li>
         </ul>
-        <div class="k-connectors-label">▸ CONNECTED VIA</div>
-        <div class="k-connectors">
-          <span class="k-chip">Notion</span>
-          <span class="k-chip">Slack</span>
-          <span class="k-chip">Google Workspace</span>
-          <span class="k-chip">契約管理 SaaS</span>
-          <span class="k-chip">経費管理</span>
-          <span class="k-chip">HR システム</span>
-        </div>
       </div>
 
       <!-- Market intelligence -->
@@ -1580,15 +1818,6 @@
           <li><span><strong>競合プロダクト</strong>の機能カバレッジ・価格・実装難易度</span></li>
           <li><span><strong>営業の話法と契約条項</strong>のパターン辞書</span></li>
         </ul>
-        <div class="k-connectors-label">▸ DRAWN FROM</div>
-        <div class="k-connectors">
-          <span class="k-chip">実契約 DB</span>
-          <span class="k-chip">業界レポート</span>
-          <span class="k-chip">公開価格表</span>
-          <span class="k-chip">G2 / Gartner</span>
-          <span class="k-chip">ベンダー研究</span>
-          <span class="k-chip">過去商談ログ</span>
-        </div>
       </div>
     </div>
 
@@ -1875,6 +2104,47 @@
       item.classList.toggle('open');
     });
   });
+
+  // Sync canvas: periodic "data sync" events highlighting random logo + its line
+  (function() {
+    const canvas = document.querySelector('.sync-canvas');
+    if (!canvas) return;
+    const logos = Array.from(canvas.querySelectorAll('.sync-logo'));
+    const lineMap = {};
+    canvas.querySelectorAll('.sync-lines line').forEach(l => { lineMap[l.id] = l; });
+    let running = false;
+    let timer = null;
+
+    function fire() {
+      if (!running) return;
+      const logo = logos[Math.floor(Math.random() * logos.length)];
+      const line = lineMap[logo.dataset.line];
+      logo.classList.add('syncing');
+      if (line) line.classList.add('active');
+      setTimeout(() => {
+        logo.classList.remove('syncing');
+        if (line) line.classList.remove('active');
+      }, 720);
+      timer = setTimeout(fire, 600 + Math.random() * 700);
+    }
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting && !running) {
+            running = true;
+            fire();
+          } else if (!en.isIntersecting && running) {
+            running = false;
+            if (timer) clearTimeout(timer);
+          }
+        });
+      }, { threshold: 0.15 }).observe(canvas);
+    } else {
+      running = true;
+      fire();
+    }
+  })();
 
   // Demo video: scene loop with typing captions, counter, dot progress
   (function() {
