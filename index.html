@@ -758,6 +758,24 @@
     z-index: 1;
     box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
+  .tile-cam .portrait {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  .portrait-mouth {
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .tile.speaker .portrait-mouth {
+    animation: speakMouth 0.42s ease-in-out infinite;
+  }
+  @keyframes speakMouth {
+    0%, 100% { transform: scaleY(0.4); }
+    50%      { transform: scaleY(1.5); }
+  }
   .tile-foot {
     position: absolute;
     bottom: 6px; left: 6px; right: 6px;
@@ -1029,12 +1047,86 @@
     height: 2px;
     background: var(--line);
     cursor: pointer;
-    transition: background 0.3s;
     border: none;
     padding: 0;
+    position: relative;
+    overflow: hidden;
   }
-  .scene-dot.active { background: var(--crimson); }
+  .scene-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--crimson);
+    width: var(--p, 0);
+    transition: width 0.08s linear;
+  }
   .scene-dot:hover { background: var(--ink-soft); }
+
+  /* Tile audio wave (only on speaker) */
+  .tile-wave {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 7px;
+    height: 18px;
+    background: rgba(52,168,83,0.92);
+    border-radius: 9px;
+    margin-left: auto;
+  }
+  .tile.speaker .tile-wave { display: inline-flex; }
+  .tile-wave span {
+    display: block;
+    width: 2px;
+    background: #fff;
+    border-radius: 1px;
+    animation: tileWave 0.7s ease-in-out infinite;
+    transform-origin: center;
+  }
+  .tile-wave span:nth-child(1) { height: 6px;  animation-delay: 0s; }
+  .tile-wave span:nth-child(2) { height: 10px; animation-delay: 0.15s; }
+  .tile-wave span:nth-child(3) { height: 7px;  animation-delay: 0.3s; }
+  @keyframes tileWave {
+    0%, 100% { transform: scaleY(0.4); }
+    50%      { transform: scaleY(1.5); }
+  }
+
+  /* Blinking eyes (all portraits) */
+  .portrait-eye {
+    transform-origin: center;
+    transform-box: fill-box;
+    animation: blink 5s infinite;
+  }
+  .tile-grid .tile:nth-child(2) .portrait-eye { animation-delay: 1.3s; animation-duration: 5.7s; }
+  .tile-grid .tile:nth-child(3) .portrait-eye { animation-delay: 2.5s; animation-duration: 6.2s; }
+  .tile-grid .tile:nth-child(4) .portrait-eye { animation-delay: 3.4s; animation-duration: 5.3s; }
+  @keyframes blink {
+    0%, 92%, 94%, 100% { transform: scaleY(1); }
+    93% { transform: scaleY(0.08); }
+  }
+
+  /* Subtle idle sway for non-speakers */
+  .tile-grid .tile:not(.speaker) .portrait {
+    animation: idleSway 6.4s ease-in-out infinite;
+  }
+  .tile-grid .tile:nth-child(2) .portrait { animation-delay: 0.4s; }
+  .tile-grid .tile:nth-child(3) .portrait { animation-delay: 1.3s; animation-duration: 7.1s; }
+  .tile-grid .tile:nth-child(4) .portrait { animation-delay: 2.0s; animation-duration: 6.7s; }
+  @keyframes idleSway {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(1.2px, -1.4px); }
+  }
+
+  /* Caption live caret */
+  .caption-line.active .caption-text::after {
+    content: '▎';
+    color: #34a853;
+    margin-left: 2px;
+    animation: caretBlink 0.8s steps(1) infinite;
+    display: inline-block;
+  }
+  @keyframes caretBlink {
+    50% { opacity: 0; }
+  }
 
   @media (max-width: 768px) {
     .demo-video-section { padding: 80px 0; }
@@ -1072,8 +1164,7 @@
     </div>
     <h1>商談に、<br>もう一人。<span class="accent">Second.</span></h1>
     <p class="hero-sub">
-      ソフトウェア・AIベンダーとの商談に同席する、買い手専属のAIエージェント。<br>
-      <em>価格の妥当性、機能の実装度、契約の落とし穴</em>を、リアルタイムで検証する。
+      ソフトウェア・AIベンダーとの商談に同席する、買い手専属のAIエージェント。<em>価格の妥当性、機能の実装度、契約の落とし穴</em>を、リアルタイムで検証する。
     </p>
     <div class="cta-group">
       <a href="#cta" class="btn-primary">
@@ -1117,40 +1208,97 @@
           </div>
 
           <div class="tile-grid">
-            <!-- Vendor (speaking) -->
+            <!-- Vendor A (speaking) - male salaryman with side-parted hair, navy suit -->
             <div class="tile speaker">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #6b4a35 0%, #2b1810 100%);">
-                <div class="tile-initial">A</div>
+                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 10 200 Q 10 156 55 144 L 145 144 Q 190 156 190 200 Z" fill="#1c2940"/>
+                  <path d="M 78 144 L 100 178 L 122 144 Z" fill="#f4f4f0"/>
+                  <path d="M 94 146 L 106 146 L 104 174 L 100 180 L 96 174 Z" fill="#7a1f1f"/>
+                  <path d="M 86 120 L 114 120 L 112 144 L 88 144 Z" fill="#dfb98e"/>
+                  <ellipse cx="100" cy="84" rx="38" ry="46" fill="#eecda5"/>
+                  <path d="M 62 72 Q 60 36 100 36 Q 140 36 140 72 Q 132 56 122 56 Q 110 60 100 56 Q 82 50 70 60 Q 64 65 62 72 Z" fill="#161616"/>
+                  <rect x="78" y="76" width="13" height="2.4" rx="1.2" fill="#161616"/>
+                  <rect x="109" y="76" width="13" height="2.4" rx="1.2" fill="#161616"/>
+                  <ellipse class="portrait-eye" cx="85" cy="86" rx="2.4" ry="3.2" fill="#161616"/>
+                  <ellipse class="portrait-eye" cx="115" cy="86" rx="2.4" ry="3.2" fill="#161616"/>
+                  <path d="M 100 94 Q 96 105 100 108 Q 104 105 100 94" fill="#d4ad84" opacity="0.7"/>
+                  <ellipse class="portrait-mouth" cx="100" cy="114" rx="7" ry="2.5" fill="#6e2e2e"/>
+                </svg>
               </div>
               <div class="tile-foot">
                 <span class="tile-mic on"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.49 6-3.31 6-6.72h-1.7z"/></svg></span>
                 <span class="tile-name">A. 営業<em>Vendor Inc.</em></span>
+                <span class="tile-wave"><span></span><span></span><span></span></span>
               </div>
             </div>
-            <!-- Vendor support -->
+
+            <!-- Tanaka (female CS, long hair, cream blouse) -->
             <div class="tile">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #4a5a6c 0%, #1a2230 100%);">
-                <div class="tile-initial">T</div>
+                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                  <ellipse cx="100" cy="100" rx="54" ry="60" fill="#0e0e0e"/>
+                  <path d="M 10 200 Q 10 160 55 148 L 145 148 Q 190 160 190 200 Z" fill="#e6d6bc"/>
+                  <path d="M 80 148 Q 100 168 120 148" stroke="#b89e7a" stroke-width="2.4" fill="none"/>
+                  <path d="M 88 122 L 112 122 L 110 148 L 90 148 Z" fill="#dfb98e"/>
+                  <ellipse cx="100" cy="88" rx="36" ry="44" fill="#eecda5"/>
+                  <path d="M 64 78 Q 70 50 100 46 Q 130 50 136 78 Q 128 64 116 64 Q 100 72 84 64 Q 70 66 64 78 Z" fill="#161616"/>
+                  <path d="M 79 82 Q 85 80 91 82" stroke="#161616" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                  <path d="M 109 82 Q 115 80 121 82" stroke="#161616" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                  <ellipse class="portrait-eye" cx="85" cy="90" rx="2.4" ry="3.2" fill="#161616"/>
+                  <ellipse class="portrait-eye" cx="115" cy="90" rx="2.4" ry="3.2" fill="#161616"/>
+                  <path d="M 100 100 Q 96 110 100 112 Q 104 110 100 100" fill="#d4ad84" opacity="0.6"/>
+                  <path d="M 91 118 Q 100 122 109 118" stroke="#8a3232" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                </svg>
               </div>
               <div class="tile-foot">
                 <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
                 <span class="tile-name">田中 (CS)</span>
               </div>
             </div>
-            <!-- Buyer colleague -->
+
+            <!-- Yamada (male IT, glasses, casual shirt) -->
             <div class="tile">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #5c4a6c 0%, #1f1828 100%);">
-                <div class="tile-initial">Y</div>
+                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 10 200 Q 10 158 55 146 L 145 146 Q 190 158 190 200 Z" fill="#34404a"/>
+                  <path d="M 82 146 L 100 168 L 118 146 Z" fill="#252e36"/>
+                  <path d="M 86 120 L 114 120 L 112 146 L 88 146 Z" fill="#dfb98e"/>
+                  <ellipse cx="100" cy="86" rx="37" ry="44" fill="#eecda5"/>
+                  <path d="M 63 72 Q 65 40 100 38 Q 138 40 138 72 Q 130 56 122 60 Q 110 50 100 54 Q 86 50 78 60 Q 70 60 63 72 Z" fill="#161616"/>
+                  <circle cx="85" cy="91" r="10" stroke="#2a2a2a" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
+                  <circle cx="115" cy="91" r="10" stroke="#2a2a2a" stroke-width="2" fill="rgba(255,255,255,0.06)"/>
+                  <line x1="95" y1="91" x2="105" y2="91" stroke="#2a2a2a" stroke-width="2"/>
+                  <rect x="78" y="80" width="13" height="2" rx="1" fill="#161616"/>
+                  <rect x="109" y="80" width="13" height="2" rx="1" fill="#161616"/>
+                  <ellipse class="portrait-eye" cx="85" cy="92" rx="2" ry="2.6" fill="#161616"/>
+                  <ellipse class="portrait-eye" cx="115" cy="92" rx="2" ry="2.6" fill="#161616"/>
+                  <path d="M 100 102 Q 96 112 100 114 Q 104 112 100 102" fill="#d4ad84" opacity="0.6"/>
+                  <path d="M 92 120 L 108 120" stroke="#5a2828" stroke-width="2" stroke-linecap="round"/>
+                </svg>
               </div>
               <div class="tile-foot">
                 <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
                 <span class="tile-name">山田 (情シス)</span>
               </div>
             </div>
-            <!-- You -->
+
+            <!-- Takashi (you, male, business casual) -->
             <div class="tile self">
               <div class="tile-cam" style="--grad: linear-gradient(135deg, #3d5a4a 0%, #14241c 100%);">
-                <div class="tile-initial">T</div>
+                <svg class="portrait" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 10 200 Q 10 158 55 146 L 145 146 Q 190 158 190 200 Z" fill="#3e4a55"/>
+                  <path d="M 80 146 L 100 170 L 120 146 Z" fill="#2c343c"/>
+                  <path d="M 86 120 L 114 120 L 112 146 L 88 146 Z" fill="#dfb98e"/>
+                  <ellipse cx="100" cy="84" rx="38" ry="46" fill="#eecda5"/>
+                  <path d="M 62 70 Q 60 34 100 34 Q 140 34 140 70 Q 132 54 110 54 Q 96 60 80 56 Q 68 62 62 70 Z" fill="#161616"/>
+                  <rect x="78" y="76" width="13" height="2.6" rx="1.3" fill="#161616"/>
+                  <rect x="109" y="76" width="13" height="2.6" rx="1.3" fill="#161616"/>
+                  <ellipse class="portrait-eye" cx="85" cy="86" rx="2.5" ry="3.3" fill="#161616"/>
+                  <ellipse class="portrait-eye" cx="115" cy="86" rx="2.5" ry="3.3" fill="#161616"/>
+                  <path d="M 100 94 Q 96 106 100 109 Q 104 106 100 94" fill="#d4ad84" opacity="0.7"/>
+                  <path d="M 92 116 Q 100 119 108 116" stroke="#6a2a2a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                </svg>
               </div>
               <div class="tile-foot">
                 <span class="tile-mic muted"><svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M19 11h-1.7c0 .74-.16 1.43-.43 2.05l1.23 1.23c.56-.98.9-2.09.9-3.28zM14.98 11.17c0-.06.02-.11.02-.17V5c0-1.66-1.34-3-3-3S9 3.34 9 5v.18l5.98 5.99zM4.27 3L3 4.27l6.01 6.01V11c0 1.66 1.33 3 2.99 3 .22 0 .44-.03.65-.08l1.66 1.66c-.71.33-1.5.52-2.31.52-2.76 0-5.3-2.1-5.3-5.1H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c.91-.13 1.77-.45 2.54-.9L19.73 21 21 19.73 4.27 3z"/></svg></span>
@@ -1204,7 +1352,7 @@
             </div>
             <div class="v-alert" data-scene="2">
               <span class="tag">⚑ Pricing alert</span>
-              この見積もりは、同規模企業の中央値より <strong>+45%高い</strong>。
+              この見積もりは、同規模企業の中央値より <strong>+<span class="counter-pct">0</span>%高い</strong>。
               直近3ヶ月で42社が <strong>¥75,000〜¥95,000/seat</strong> で契約しています。
             </div>
             <div class="v-alert gold" data-scene="3">
@@ -1491,7 +1639,7 @@
     });
   });
 
-  // Demo video: 3-scene loop player
+  // Demo video: scene loop with typing captions, counter, dot progress
   (function() {
     const TOTAL_SCENES = 4;
     const SCENE_MS = 8000;
@@ -1505,21 +1653,59 @@
     const dots = document.querySelectorAll('.scene-dot');
     if (!fill) return;
 
+    // Pre-cache caption text, clear initial render
+    document.querySelectorAll('.caption-line .caption-text').forEach(el => {
+      el.dataset.full = el.textContent.trim();
+      el.textContent = '';
+    });
+
     let elapsed = 0;
     let currentScene = 0;
     let playing = true;
     let lastTick = performance.now();
     let rafId = null;
+    let typingTimer = null;
+    let counterRaf = null;
 
     function fmt(ms) {
       const s = Math.floor(ms / 1000);
       return '0:' + String(s).padStart(2, '0');
     }
     function fmtRec(ms) {
-      const total = 167 + Math.floor(ms / 1000); // start from 02:47
+      const total = 167 + Math.floor(ms / 1000);
       const m = Math.floor(total / 60);
       const s = total % 60;
       return 'REC ' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+    }
+
+    function typeCaption(line) {
+      if (typingTimer) { clearTimeout(typingTimer); typingTimer = null; }
+      const textEl = line.querySelector('.caption-text');
+      if (!textEl) return;
+      const full = textEl.dataset.full || '';
+      textEl.textContent = '';
+      let i = 0;
+      function step() {
+        if (i >= full.length) { typingTimer = null; return; }
+        textEl.textContent = full.slice(0, ++i);
+        typingTimer = setTimeout(step, 30 + Math.random() * 28);
+      }
+      step();
+    }
+
+    function animateCounter(target, sel) {
+      const el = document.querySelector(sel);
+      if (!el) return;
+      if (counterRaf) cancelAnimationFrame(counterRaf);
+      const dur = 1300;
+      const startT = performance.now();
+      function step(t) {
+        const p = Math.min(1, (t - startT) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased);
+        if (p < 1) counterRaf = requestAnimationFrame(step);
+      }
+      counterRaf = requestAnimationFrame(step);
     }
 
     function showScene(n) {
@@ -1529,6 +1715,9 @@
         el.classList.toggle('active', parseInt(el.dataset.scene, 10) === n);
       });
       dots.forEach((d, i) => d.classList.toggle('active', (i + 1) === n));
+      const activeCap = document.querySelector('.caption-line.active');
+      if (activeCap) typeCaption(activeCap);
+      if (n === 2) animateCounter(45, '.counter-pct');
     }
 
     function render() {
@@ -1538,6 +1727,12 @@
       if (recTime) recTime.textContent = fmtRec(elapsed);
       const sceneIdx = Math.min(TOTAL_SCENES, Math.floor(elapsed / SCENE_MS) + 1);
       showScene(sceneIdx);
+      const sceneProgress = (elapsed % SCENE_MS) / SCENE_MS;
+      dots.forEach((d, i) => {
+        const sn = i + 1;
+        const p = sn < sceneIdx ? 100 : (sn === sceneIdx ? sceneProgress * 100 : 0);
+        d.style.setProperty('--p', p.toFixed(1) + '%');
+      });
     }
 
     function tick(now) {
@@ -1574,7 +1769,6 @@
       render();
     });
 
-    // Pause when out of view (perf + battery)
     if ('IntersectionObserver' in window) {
       const frame = document.querySelector('.video-frame');
       new IntersectionObserver((entries) => {
