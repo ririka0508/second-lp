@@ -2544,13 +2544,69 @@
     background: var(--bg);
   }
   .demi-msg {
-    max-width: 80%;
-    padding: 9px 13px;
+    max-width: 86%;
+    padding: 10px 14px;
     border-radius: 14px;
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.65;
     white-space: pre-line;
     animation: demi-msg-in 0.3s ease-out;
+    word-break: break-word;
+  }
+  .demi-msg img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 6px 0;
+    display: block;
+  }
+  .demi-msg a {
+    color: var(--crimson);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .demi-msg strong { font-weight: 700; }
+  .demi-msg code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    background: rgba(10, 10, 10, 0.06);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+  .demi-msg.from-user code { background: rgba(255, 255, 255, 0.15); }
+  .demi-msg pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    background: rgba(10, 10, 10, 0.06);
+    padding: 8px 10px;
+    border-radius: 6px;
+    margin: 6px 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .demi-msg.from-user pre { background: rgba(255, 255, 255, 0.15); }
+  .demi-msg h3, .demi-msg h4 {
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 6px 0 2px;
+    letter-spacing: 0.02em;
+  }
+  .demi-msg ul {
+    margin: 4px 0 4px 18px;
+    padding: 0;
+  }
+  .demi-msg ul li { margin: 2px 0; }
+  .demi-msg .demi-card {
+    background: rgba(10, 10, 10, 0.04);
+    border-left: 3px solid var(--crimson);
+    padding: 10px 12px;
+    margin: 6px 0;
+    border-radius: 6px;
+    white-space: normal;
+  }
+  .demi-msg .demi-card .demi-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 4px;
   }
   @keyframes demi-msg-in {
     from { opacity: 0; transform: translateY(4px); }
@@ -2693,10 +2749,70 @@
     const $callout = document.getElementById('demiCallout');
     const $cclose  = document.getElementById('demiCalloutClose');
 
+    // Minimal safe markdown renderer for Second's replies (XSS-aware).
+    // Order of operations matters: escape first, then handle markup.
+    function renderRich(text) {
+      const placeholders = [];
+      const store = (html) => {
+        placeholders.push(html);
+        return ` PH${placeholders.length - 1} `;
+      };
+
+      // 1. escape raw HTML
+      let s = String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      // 2. code blocks ```...```
+      s = s.replace(/```([\s\S]*?)```/g, (_, code) =>
+        store(`<pre>${code.replace(/^\n|\n$/g, '')}</pre>`)
+      );
+
+      // 3. inline code `...`
+      s = s.replace(/`([^`\n]+)`/g, (_, code) => store(`<code>${code}</code>`));
+
+      // 4. images ![alt](url) — http(s) only
+      s = s.replace(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g, (_, alt, url) =>
+        store(`<img src="${url}" alt="${alt}" loading="lazy" />`)
+      );
+
+      // 5. links [text](url) — http(s) only
+      s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, label, url) =>
+        store(`<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`)
+      );
+
+      // 6. bold **text**
+      s = s.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+
+      // 7. headings (### / ##)
+      s = s.replace(/^### (.+)$/gm, '<h4>$1</h4>');
+      s = s.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+
+      // 8. bullet lists: lines starting with "- " or "・"
+      s = s.replace(/^(?:[-•・] )(.+)$/gm, '<li>$1</li>');
+      s = s.replace(/(?:<li>[^]*?<\/li>\n?)+/g, (m) => `<ul>${m.replace(/\n/g, '')}</ul>`);
+
+      // 9. bare URLs (only if not already inside an href)
+      s = s.replace(
+        /(^|[^"=])(https?:\/\/[^\s<]+)/g,
+        '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>'
+      );
+
+      // restore placeholders
+      s = s.replace(/ PH(\d+) /g, (_, i) => placeholders[Number(i)]);
+
+      return s;
+    }
+
     const addMsg = (text, who) => {
       const el = document.createElement('div');
       el.className = 'demi-msg from-' + who;
-      el.textContent = text;
+      if (who === 'demi') {
+        el.innerHTML = renderRich(text);
+      } else {
+        el.textContent = text; // user messages stay plain text (defense in depth)
+      }
       $msgs.appendChild(el);
       $msgs.scrollTop = $msgs.scrollHeight;
       return el;
