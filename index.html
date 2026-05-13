@@ -2497,20 +2497,25 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    width: 32px;
-    height: 32px;
+    width: 38px;
+    height: 38px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(8px);
+    background: rgba(10, 10, 10, 0.78);
+    backdrop-filter: blur(10px);
     border: 0;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 1;
-    color: var(--ink);
+    color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background 0.15s, transform 0.1s;
+    z-index: 5;
+    box-shadow: 0 4px 12px -2px rgba(10, 10, 10, 0.35);
   }
+  .demi-head .demi-close:hover { background: var(--crimson); }
+  .demi-head .demi-close:active { transform: scale(0.92); }
   .demi-head .demi-meta {
     position: absolute;
     left: 16px;
@@ -2956,6 +2961,11 @@
     });
     $cclose.addEventListener('click', (e) => { e.stopPropagation(); dismissCallout(); });
     $close.addEventListener('click', close);
+
+    // ESC キーで panel を閉じる
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && $panel.classList.contains('open')) close();
+    });
 
     $form.addEventListener('submit', async (e) => {
       e.preventDefault();
