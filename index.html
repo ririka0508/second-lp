@@ -2310,9 +2310,74 @@
     overflow: hidden;
     box-shadow: 0 12px 32px -8px rgba(10, 10, 10, 0.35), 0 0 0 1px var(--line);
     background: var(--bg-paper);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: demi-float 3.4s ease-in-out infinite;
+    transition: box-shadow 0.25s ease;
   }
-  .demi-bubble:hover { transform: scale(1.04); box-shadow: 0 16px 40px -8px rgba(10, 10, 10, 0.4), 0 0 0 1px var(--ink); }
+  @keyframes demi-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+  }
+  .demi-bubble.attention {
+    animation: demi-bounce 0.9s cubic-bezier(0.28, 0.84, 0.42, 1) 1, demi-float 3.4s ease-in-out 0.9s infinite;
+  }
+  @keyframes demi-bounce {
+    0%   { transform: translateY(0)     scale(1); }
+    25%  { transform: translateY(-22px) scale(1.06); }
+    45%  { transform: translateY(0)     scale(0.98); }
+    65%  { transform: translateY(-12px) scale(1.03); }
+    80%  { transform: translateY(0)     scale(1); }
+    100% { transform: translateY(0)     scale(1); }
+  }
+  .demi-bubble:hover {
+    box-shadow: 0 16px 40px -8px rgba(10, 10, 10, 0.4), 0 0 0 1px var(--ink);
+    animation-play-state: paused;
+  }
+
+  /* Speech callout */
+  .demi-callout {
+    position: fixed;
+    right: 108px;
+    bottom: 38px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 10px 14px;
+    border-radius: 14px;
+    border-bottom-right-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 49;
+    white-space: nowrap;
+    box-shadow: 0 12px 28px -8px rgba(10, 10, 10, 0.35);
+    opacity: 0;
+    transform: translateX(8px) scale(0.95);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    pointer-events: none;
+    font-family: 'Noto Sans JP', sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .demi-callout.show {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    pointer-events: auto;
+    cursor: pointer;
+  }
+  .demi-callout::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    bottom: 14px;
+    width: 0; height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 8px solid var(--ink);
+  }
+  .demi-callout .demi-callout-close {
+    margin-left: 8px;
+    opacity: 0.5;
+    font-size: 11px;
+    cursor: pointer;
+  }
+  .demi-callout .demi-callout-close:hover { opacity: 1; }
   .demi-bubble video {
     width: 100%; height: 100%; object-fit: cover; display: block;
   }
@@ -2498,7 +2563,11 @@
   .demi-composer button:disabled { opacity: 0.4; cursor: wait; }
 </style>
 
-<div class="demi-bubble" id="demiBubble" aria-label="Demi に話しかける">
+<div class="demi-callout" id="demiCallout" role="button" aria-label="Second を試す">
+  Second、ちょっと試してみない？🩷<span class="demi-callout-close" id="demiCalloutClose" aria-label="閉じる">×</span>
+</div>
+
+<div class="demi-bubble" id="demiBubble" aria-label="Second に話しかける">
   <video src="demi.mp4" autoplay loop muted playsinline></video>
 </div>
 
@@ -2520,12 +2589,14 @@
 
 <script>
   (function() {
-    const $bubble = document.getElementById('demiBubble');
-    const $panel  = document.getElementById('demiPanel');
-    const $close  = document.getElementById('demiClose');
-    const $msgs   = document.getElementById('demiMsgs');
-    const $form   = document.getElementById('demiForm');
-    const $input  = document.getElementById('demiInput');
+    const $bubble  = document.getElementById('demiBubble');
+    const $panel   = document.getElementById('demiPanel');
+    const $close   = document.getElementById('demiClose');
+    const $msgs    = document.getElementById('demiMsgs');
+    const $form    = document.getElementById('demiForm');
+    const $input   = document.getElementById('demiInput');
+    const $callout = document.getElementById('demiCallout');
+    const $cclose  = document.getElementById('demiCalloutClose');
 
     const addMsg = (text, who) => {
       const el = document.createElement('div');
@@ -2578,7 +2649,43 @@
     ];
     let i = 0;
 
-    $bubble.addEventListener('click', open);
+    function bounce() {
+      $bubble.classList.remove('attention');
+      // reflow trick to restart the animation
+      void $bubble.offsetWidth;
+      $bubble.classList.add('attention');
+    }
+
+    let calloutDismissed = false;
+    function showCallout() {
+      if (calloutDismissed || $panel.classList.contains('open')) return;
+      $callout.classList.add('show');
+      bounce();
+    }
+    function hideCallout() {
+      $callout.classList.remove('show');
+    }
+    function dismissCallout() {
+      calloutDismissed = true;
+      hideCallout();
+    }
+
+    // 初回 attention（着地後3秒）
+    setTimeout(showCallout, 3000);
+    // 以降は 45秒おきに再アピール（panel 開いてない & 未dismiss の時）
+    setInterval(() => {
+      if (!$panel.classList.contains('open') && !calloutDismissed) {
+        showCallout();
+        setTimeout(hideCallout, 6500);
+      }
+    }, 45000);
+
+    $bubble.addEventListener('click', () => { dismissCallout(); open(); });
+    $callout.addEventListener('click', (e) => {
+      if (e.target === $cclose) return;
+      dismissCallout(); open();
+    });
+    $cclose.addEventListener('click', (e) => { e.stopPropagation(); dismissCallout(); });
     $close.addEventListener('click', close);
 
     $form.addEventListener('submit', async (e) => {
