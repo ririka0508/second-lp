@@ -225,7 +225,7 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* Hero decoration */
+  /* Hero decoration (manifesto + ririka portrait) */
   .hero-deco {
     position: absolute;
     top: 200px;
@@ -239,6 +239,7 @@
     text-align: right;
     opacity: 0;
     animation: fadeUp 1s ease-out 1s forwards;
+    display: none;
   }
   .hero-deco::before {
     content: '— Manifesto №01';
@@ -249,6 +250,47 @@
     letter-spacing: 0.2em;
     color: var(--crimson);
     margin-bottom: 16px;
+  }
+
+  .hero h1, .hero-sub, .cta-group {
+    position: relative;
+    z-index: 2;
+  }
+  .hero h1 { max-width: 60%; }
+  .hero-sub { max-width: 50%; }
+
+  .hero-portrait {
+    position: absolute;
+    top: 90px;
+    right: -40px;
+    width: 42%;
+    max-width: 540px;
+    z-index: 1;
+    opacity: 0;
+    animation: fadeUp 1.2s ease-out 0.8s forwards, hero-float 6s ease-in-out 2s infinite;
+    pointer-events: none;
+  }
+  .hero-portrait img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 24px 48px rgba(10,10,10,0.12));
+  }
+  @keyframes hero-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-12px); }
+  }
+  @media (max-width: 900px) {
+    .hero h1, .hero-sub { max-width: 100%; }
+    .hero-portrait {
+      position: relative;
+      top: 0;
+      right: 0;
+      width: 78%;
+      max-width: 420px;
+      margin: 40px auto 0;
+      animation: fadeUp 1.2s ease-out 0.6s forwards;
+    }
   }
 
   /* Section base */
@@ -1584,8 +1626,8 @@
       <a href="#how" class="btn-secondary">仕組みを見る</a>
     </div>
 
-    <div class="hero-deco">
-      <p>その業務、<br>AI に任せて<br>みませんか。</p>
+    <div class="hero-portrait">
+      <img src="ririka-hero.png" alt="森脇梨々夏 — Second イメージタレント" />
     </div>
   </div>
 </section>
