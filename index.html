@@ -2589,17 +2589,29 @@
     white-space: pre;
   }
   .demi-msg.from-user pre { background: rgba(255, 255, 255, 0.15); }
-  .demi-msg h3, .demi-msg h4 {
-    font-size: 13.5px;
+  .demi-msg h3, .demi-msg h4, .demi-msg h5 {
     font-weight: 700;
-    margin: 6px 0 2px;
+    margin: 8px 0 4px;
     letter-spacing: 0.02em;
+    line-height: 1.35;
+  }
+  .demi-msg h3 { font-size: 15px; }
+  .demi-msg h4 { font-size: 14px; }
+  .demi-msg h5 { font-size: 13px; color: var(--ink-soft); }
+  .demi-msg h3:first-child,
+  .demi-msg h4:first-child,
+  .demi-msg h5:first-child { margin-top: 0; }
+  .demi-msg hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 8px 0;
   }
   .demi-msg ul {
-    margin: 4px 0 4px 18px;
+    margin: 4px 0 6px 18px;
     padding: 0;
   }
-  .demi-msg ul li { margin: 2px 0; }
+  .demi-msg ul li { margin: 3px 0; }
+  .demi-msg p { margin: 4px 0; }
   .demi-msg .demi-card {
     background: rgba(10, 10, 10, 0.04);
     border-left: 3px solid var(--crimson);
