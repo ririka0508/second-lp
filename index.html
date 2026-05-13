@@ -2501,6 +2501,7 @@
     border-radius: 14px;
     font-size: 13px;
     line-height: 1.6;
+    white-space: pre-line;
     animation: demi-msg-in 0.3s ease-out;
   }
   @keyframes demi-msg-in {
@@ -2657,9 +2658,10 @@
 
     let opened = false;
     const intro = [
-      'こんにちは🩷 私が Second、あなたの社内DX担当 AI agent です。',
-      '受信箱・デスクトップ・海外SaaS動向を常時 watching して、面倒な業務は私が勝手にやっときます。',
-      '今日、何が困ってます？それとも、私が見つけた watch ネタから始めましょか？',
+      'たかし〜🩷 ここ3日はネコどんの修正でめっちゃ大変そうやったな！横でずっと見てたで。',
+      'そんなあなたに、海外で良さそうなん見つけてきた。Braintrust っていう AI eval / observability の SaaS、LLM bot の回帰テスト管理が他より深い。',
+      '私が代わりに demo 聞いてきたで。まとめるとこう：\n\n⚑ 価格目安: 100名規模で $1,500〜$3,000/月(中央値より少し安め)\n⚑ 強み: prompt versioning と eval set 管理\n⚑ 懸念: 日本語UIなし、ISMS は2026 Q3 取得予定',
+      '今のネコどん、eval が手動commitになってる部分あるやろ？ これに乗せ替えたら1〜2週間で回帰検知が自動化できるはず。詳しく見る？それとも他の watch ネタから始める？',
     ];
 
     async function open() {
