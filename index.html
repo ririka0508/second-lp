@@ -2460,7 +2460,8 @@
     width: 480px;
     max-width: calc(100vw - 32px);
     height: 760px;
-    max-height: calc(100vh - 48px);
+    /* nav bar (~80px) を避けるため上に余白を確保 */
+    max-height: calc(100vh - 120px);
     background: var(--bg);
     border-radius: 20px;
     border: 1px solid var(--line);
