@@ -2802,12 +2802,17 @@
       // 6. bold **text**
       s = s.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
 
-      // 7. headings (### / ##)
-      s = s.replace(/^### (.+)$/gm, '<h4>$1</h4>');
-      s = s.replace(/^## (.+)$/gm, '<h3>$1</h3>');
+      // 7. headings: # 〜 ###### を h3 / h4 / h5 にマップ (bubble 内なので h1/h2 は使わない)
+      s = s.replace(/^#{4,6}\s+(.+)$/gm, '<h5>$1</h5>');
+      s = s.replace(/^###\s+(.+)$/gm, '<h4>$1</h4>');
+      s = s.replace(/^##\s+(.+)$/gm, '<h3>$1</h3>');
+      s = s.replace(/^#\s+(.+)$/gm, '<h3>$1</h3>');
 
-      // 8. bullet lists: lines starting with "- " or "・"
-      s = s.replace(/^(?:[-•・] )(.+)$/gm, '<li>$1</li>');
+      // 7.5 horizontal rule: --- / *** / ___
+      s = s.replace(/^[-*_]{3,}\s*$/gm, '<hr />');
+
+      // 8. bullet lists: lines starting with "- " or "・" or "* "
+      s = s.replace(/^(?:[-•・*] )(.+)$/gm, '<li>$1</li>');
       s = s.replace(/(?:<li>[^]*?<\/li>\n?)+/g, (m) => `<ul>${m.replace(/\n/g, '')}</ul>`);
 
       // 9. bare URLs (only if not already inside an href)
@@ -2815,6 +2820,11 @@
         /(^|[^"=])(https?:\/\/[^\s<]+)/g,
         '$1<a href="$2" target="_blank" rel="noopener noreferrer">$2</a>'
       );
+
+      // 10. collapse extra newlines + strip whitespace around block elements
+      s = s.replace(/\n{3,}/g, '\n\n');
+      s = s.replace(/\n+(<(?:h[3-5]|ul|hr|pre|img)\b)/g, '$1');
+      s = s.replace(/(<\/(?:h[3-5]|ul|pre)>|<(?:hr|img)[^>]*\/?>)\n+/g, '$1');
 
       // restore placeholders
       s = s.replace(/ PH(\d+) /g, (_, i) => placeholders[Number(i)]);
