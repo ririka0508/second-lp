@@ -2296,5 +2296,308 @@
   })();
 </script>
 
+<!-- ===== Demi — floating AI advisor widget ===== -->
+<style>
+  .demi-bubble {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 50;
+    overflow: hidden;
+    box-shadow: 0 12px 32px -8px rgba(10, 10, 10, 0.35), 0 0 0 1px var(--line);
+    background: var(--bg-paper);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .demi-bubble:hover { transform: scale(1.04); box-shadow: 0 16px 40px -8px rgba(10, 10, 10, 0.4), 0 0 0 1px var(--ink); }
+  .demi-bubble video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .demi-bubble::after {
+    content: '';
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #4caf50;
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.5);
+    animation: demi-pulse 2s infinite;
+  }
+  @keyframes demi-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(76, 175, 80, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+  }
+
+  .demi-panel {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 380px;
+    max-width: calc(100vw - 32px);
+    height: 560px;
+    max-height: calc(100vh - 48px);
+    background: var(--bg);
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    box-shadow: 0 24px 64px -12px rgba(10, 10, 10, 0.3);
+    z-index: 51;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .demi-panel.open { display: flex; animation: demi-rise 0.3s ease-out; }
+  @keyframes demi-rise {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .demi-head {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(180deg, #f5f4f1 0%, var(--bg-paper) 100%);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .demi-head video {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+  .demi-head .demi-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    border: 0;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .demi-head .demi-meta {
+    position: absolute;
+    left: 16px;
+    bottom: 12px;
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
+  }
+  .demi-head .demi-meta strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .demi-head .demi-meta span {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .demi-msgs {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--bg);
+  }
+  .demi-msg {
+    max-width: 80%;
+    padding: 9px 13px;
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.6;
+    animation: demi-msg-in 0.3s ease-out;
+  }
+  @keyframes demi-msg-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .demi-msg.from-demi {
+    align-self: flex-start;
+    background: var(--bg-paper);
+    color: var(--ink);
+    border-bottom-left-radius: 4px;
+  }
+  .demi-msg.from-user {
+    align-self: flex-end;
+    background: var(--ink);
+    color: var(--bg);
+    border-bottom-right-radius: 4px;
+  }
+  .demi-msg.typing {
+    background: var(--bg-paper);
+    align-self: flex-start;
+    display: inline-flex;
+    gap: 4px;
+    padding: 12px 14px;
+    border-bottom-left-radius: 4px;
+  }
+  .demi-msg.typing span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--ink-mute);
+    animation: demi-typing 1.2s infinite;
+  }
+  .demi-msg.typing span:nth-child(2) { animation-delay: 0.15s; }
+  .demi-msg.typing span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes demi-typing {
+    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+    30% { opacity: 1; transform: translateY(-3px); }
+  }
+
+  .demi-composer {
+    border-top: 1px solid var(--line);
+    padding: 10px;
+    display: flex;
+    gap: 6px;
+    background: var(--bg);
+  }
+  .demi-composer input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    background: var(--bg);
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .demi-composer input:focus { border-color: var(--ink); }
+  .demi-composer button {
+    padding: 9px 14px;
+    background: var(--ink);
+    color: var(--bg);
+    border: 0;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 500;
+  }
+  .demi-composer button:disabled { opacity: 0.4; cursor: wait; }
+</style>
+
+<div class="demi-bubble" id="demiBubble" aria-label="Demi に話しかける">
+  <video src="demi.mp4" autoplay loop muted playsinline></video>
+</div>
+
+<div class="demi-panel" id="demiPanel" role="dialog" aria-label="Demi chat">
+  <div class="demi-head">
+    <video src="demi.mp4" autoplay loop muted playsinline></video>
+    <button class="demi-close" id="demiClose" aria-label="閉じる">×</button>
+    <div class="demi-meta">
+      <strong>Demi</strong>
+      <span>AI demo agent — sell side</span>
+    </div>
+  </div>
+  <div class="demi-msgs" id="demiMsgs"></div>
+  <form class="demi-composer" id="demiForm">
+    <input id="demiInput" placeholder="Demi に質問する..." autocomplete="off" />
+    <button type="submit">送信</button>
+  </form>
+</div>
+
+<script>
+  (function() {
+    const $bubble = document.getElementById('demiBubble');
+    const $panel  = document.getElementById('demiPanel');
+    const $close  = document.getElementById('demiClose');
+    const $msgs   = document.getElementById('demiMsgs');
+    const $form   = document.getElementById('demiForm');
+    const $input  = document.getElementById('demiInput');
+
+    const addMsg = (text, who) => {
+      const el = document.createElement('div');
+      el.className = 'demi-msg from-' + who;
+      el.textContent = text;
+      $msgs.appendChild(el);
+      $msgs.scrollTop = $msgs.scrollHeight;
+      return el;
+    };
+    const addTyping = () => {
+      const el = document.createElement('div');
+      el.className = 'demi-msg typing';
+      el.innerHTML = '<span></span><span></span><span></span>';
+      $msgs.appendChild(el);
+      $msgs.scrollTop = $msgs.scrollHeight;
+      return el;
+    };
+    const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+    let opened = false;
+    const intro = [
+      'はじめまして、Demi です🩷 PLAINER の AI demo agent やってます。',
+      '私は「売り手側」の代弁者。商談前に、製品のこと先回りで答えます。',
+      'ちなみに、このサイトの Second は「買い手側」の AI。私とちょうど対をなしてる存在🩷',
+    ];
+
+    async function open() {
+      $panel.classList.add('open');
+      $bubble.style.display = 'none';
+      if (!opened) {
+        opened = true;
+        for (const t of intro) {
+          await sleep(700);
+          addMsg(t, 'demi');
+        }
+      }
+      setTimeout(() => $input.focus(), 320);
+    }
+    function close() {
+      $panel.classList.remove('open');
+      $bubble.style.display = '';
+    }
+
+    const replies = [
+      'いい質問🩷 私は売り手側に立つ AI なので、製品の魅力を最大化して伝える側。Second は逆に、それを冷静に検証する側です。',
+      '私が「この機能、すごいんです！」って言ったとして、Second は「業界平均と比べてどう？」「隠れコストは？」って隣で囁いてくれる存在🩷',
+      'つまり同じ商談に、売り手の Demi と買い手の Second、両方いる。これからの SaaS 商談は、AI 同士の対話を人間が監督する形になります。',
+      'PLAINER は売り手のための「プロダクトに、しゃべらせよう」、Second は買い手のための「営業に、振り回されない」。哲学が見事に裏返ってる🩷',
+      '具体的なユースケース知りたいですか？それとも Second の使い方を聞きに来ました？私からはどっちも案内できます〜',
+    ];
+    let i = 0;
+
+    $bubble.addEventListener('click', open);
+    $close.addEventListener('click', close);
+
+    $form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = $input.value.trim();
+      if (!text) return;
+      addMsg(text, 'user');
+      $input.value = '';
+      $input.disabled = true;
+      await sleep(500);
+      const t = addTyping();
+      await sleep(1200 + Math.random() * 600);
+      t.remove();
+      addMsg(replies[i++ % replies.length], 'demi');
+      $input.disabled = false;
+      $input.focus();
+    });
+  })();
+</script>
+
 </body>
 </html>
