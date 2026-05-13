@@ -933,6 +933,31 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
+  }
+  .second-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px -4px rgba(10,10,10,0.18), 0 0 0 1px var(--line);
+    background: var(--bg-paper);
+  }
+  .second-avatar video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+    display: block;
+  }
+  .second-avatar.lg { width: 56px; height: 56px; }
+  .second-logo-mini .second-brand-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-left: 12px;
   }
   .second-logo-mini .second-brand::after {
     content: '.';
@@ -1673,8 +1698,11 @@
         <!-- Right: Second's panel -->
         <div class="stage-right">
           <div class="second-logo-mini">
-            <span class="second-brand">Second</span>
-            <span class="second-status">LISTENING</span>
+            <div class="second-avatar lg"><video src="demi.mp4" autoplay loop muted playsinline></video></div>
+            <div class="second-brand-block">
+              <span class="second-brand">Second</span>
+              <span class="second-status" style="font-size:9px;">WATCHING</span>
+            </div>
           </div>
           <div class="alert-stream">
             <div class="v-alert" data-scene="1">
@@ -1880,8 +1908,9 @@
 
       <!-- Second's side panel -->
       <div class="second-side">
-        <div class="second-header">
-          <span>Second / DX agent</span>
+        <div class="second-header" style="gap:12px;">
+          <div class="second-avatar"><video src="demi.mp4" autoplay loop muted playsinline></video></div>
+          <span style="flex:1;">Second / DX agent</span>
           <span>● WATCHING</span>
         </div>
 
