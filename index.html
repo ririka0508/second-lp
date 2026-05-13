@@ -1783,6 +1783,264 @@
   </div>
 </section>
 
+<!-- ===== mini-demo CSS (used by Demo B / C) ===== -->
+<style>
+  .mini-demo {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg);
+    margin-top: 32px;
+  }
+  @media (max-width: 900px) {
+    .mini-demo { grid-template-columns: 1fr; }
+  }
+  .mini-demo-left {
+    background: #fff;
+    padding: 0;
+    border-right: 1px solid var(--line);
+    min-height: 360px;
+    position: relative;
+  }
+  @media (max-width: 900px) {
+    .mini-demo-left { border-right: 0; border-bottom: 1px solid var(--line); }
+  }
+  .mini-chrome {
+    background: #f3f1eb;
+    padding: 8px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    font-size: 11px;
+    color: var(--ink-mute);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .mini-chrome .dots { display: flex; gap: 4px; }
+  .mini-chrome .dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .mini-chrome .dots span:nth-child(1) { background: #ff5f57; }
+  .mini-chrome .dots span:nth-child(2) { background: #febc2e; }
+  .mini-chrome .dots span:nth-child(3) { background: #28c840; }
+
+  /* Spreadsheet mock */
+  .ss-grid { padding: 14px; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; }
+  .ss-grid table { width: 100%; border-collapse: collapse; }
+  .ss-grid th, .ss-grid td {
+    border: 1px solid #e3e0d8;
+    padding: 6px 10px;
+    text-align: left;
+  }
+  .ss-grid th {
+    background: #faf8f3;
+    color: var(--ink-mute);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .ss-grid td.num { text-align: right; font-family: 'JetBrains Mono', monospace; }
+  .ss-grid td.editing {
+    background: #fff4d6;
+    box-shadow: inset 0 0 0 2px var(--crimson);
+    position: relative;
+  }
+  .ss-grid td.editing::after {
+    content: '|';
+    color: var(--crimson);
+    animation: ss-blink 1s steps(2) infinite;
+    margin-left: 2px;
+  }
+  @keyframes ss-blink { 50% { opacity: 0; } }
+  .ss-task-tip {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: #faf8f3;
+    border-left: 3px solid var(--ink-mute);
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  /* Document mock */
+  .doc-page {
+    padding: 24px 30px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    line-height: 1.85;
+    color: var(--ink-soft);
+  }
+  .doc-page h4 { font-size: 14px; margin: 12px 0 6px; color: var(--ink); }
+  .doc-page p { margin: 0 0 8px; }
+  .doc-page .doc-blank {
+    display: inline-block;
+    width: 120px;
+    height: 14px;
+    background: #fff4d6;
+    border-bottom: 2px solid var(--crimson);
+    vertical-align: middle;
+    animation: ss-blink 1.2s steps(2) infinite;
+  }
+  .doc-page .doc-highlight {
+    background: #fff4d6;
+    padding: 0 2px;
+  }
+
+  .mini-demo-right {
+    padding: 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--bg-paper);
+  }
+  .mini-demo-right .mini-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .mini-demo-right .mini-head .second-avatar { width: 40px; height: 40px; }
+  .mini-demo-right .mini-head .mini-status {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+  }
+  .mini-alert {
+    background: var(--bg);
+    border-radius: 8px;
+    border-left: 3px solid var(--crimson);
+    padding: 10px 12px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+  .mini-alert.advisor { border-left-color: #2d5072; }
+  .mini-alert.gold { border-left-color: var(--gold); }
+  .mini-alert.build { border-left-color: var(--ink); }
+  .mini-alert .mini-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--crimson);
+    margin-bottom: 4px;
+  }
+  .mini-alert.advisor .mini-tag { color: #2d5072; }
+  .mini-alert.gold .mini-tag { color: var(--gold); }
+  .mini-alert.build .mini-tag { color: var(--ink); }
+  .mini-alert strong { font-weight: 700; }
+</style>
+
+<!-- ===== DEMO B: Excel で SaaS 費用集計 ===== -->
+<section class="demo-video-section" id="demo-b">
+  <div class="container">
+    <div class="section-label"><span class="num">01</span>ALWAYS WATCHING — DEMO B</div>
+    <h2 class="section-title">Excel の手集計、<br>もう要らんで。</h2>
+    <p class="section-desc">部門別 SaaS 費用を Excel で集計してる時、<em style="font-style:normal; background:var(--highlight); padding:0 4px;">Second は隣でずっと見てる</em>。<br>「これ、agent 作ろうか？」と能動的に build-or-buy 提案する。</p>
+
+    <div class="mini-demo">
+      <div class="mini-demo-left">
+        <div class="mini-chrome">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>Numbers — SaaS_Costs_Q2.numbers</span>
+        </div>
+        <div class="ss-grid">
+          <table>
+            <thead>
+              <tr><th></th><th>部門</th><th>SaaS</th><th>seats</th><th>月額</th><th>年額</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="num">1</td><td>営業</td><td>Salesforce</td><td class="num">42</td><td class="num">¥504,000</td><td class="num">¥6,048,000</td></tr>
+              <tr><td class="num">2</td><td>マーケ</td><td>HubSpot</td><td class="num">18</td><td class="num">¥216,000</td><td class="num">¥2,592,000</td></tr>
+              <tr><td class="num">3</td><td>開発</td><td>GitHub Ent</td><td class="num">28</td><td class="num">¥168,000</td><td class="num">¥2,016,000</td></tr>
+              <tr><td class="num">4</td><td>カスタマー</td><td>Zendesk</td><td class="num">12</td><td class="num">¥144,000</td><td class="num">¥1,728,000</td></tr>
+              <tr><td class="num">5</td><td>全社</td><td>Notion</td><td class="num">120</td><td class="num">¥120,000</td><td class="num editing">¥1,440,000</td></tr>
+            </tbody>
+          </table>
+          <div class="ss-task-tip">→ あなた: 残り18個の SaaS を手入力中… 終わるのは明後日。</div>
+        </div>
+      </div>
+
+      <div class="mini-demo-right">
+        <div class="mini-head">
+          <div class="second-avatar"><video src="demi.mp4" autoplay loop muted playsinline></video></div>
+          <span>Second</span>
+          <span class="mini-status">● WATCHING</span>
+        </div>
+        <div class="mini-alert">
+          <span class="mini-tag">🤖 これ、効率化できるで〜</span>
+          残り18個、手で入力するのに<strong>あと9時間</strong>かかる試算。<strong>Vendr / Zylo</strong>の dashboard なら全SaaSが自動同期で集計込み🩷
+        </div>
+        <div class="mini-alert build">
+          <span class="mini-tag">⚒ もしくは内製案</span>
+          御社の場合、SSO 連携した既存SaaSの利用ログから自動集計する <strong>社内 agent</strong> なら推定 <strong>3日 / $0/月運用</strong>。<br>Claude API + Notion DB + cron でいけるで。<strong>agent 作ろうか？</strong>
+        </div>
+        <div class="mini-alert gold">
+          <span class="mini-tag">💰 build-or-buy 判定</span>
+          御社規模(150名)なら<strong>内製寄り</strong>がおすすめ。Vendr は月¥120k〜で長期 lock-in。内製なら 1ヶ月で元取れる🩷
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DEMO C: 商談議事録 / 稟議書 ===== -->
+<section class="demo-video-section" id="demo-c">
+  <div class="container">
+    <div class="section-label"><span class="num">02</span>ALWAYS WATCHING — DEMO C</div>
+    <h2 class="section-title">稟議書の文章、<br>固まる前に書き上げる。</h2>
+    <p class="section-desc">商談が終わった瞬間、あなたが Word を開く前に <em style="font-style:normal; background:var(--highlight); padding:0 4px;">Second は議事録 → 稟議書 → メール返信</em> までドラフトを並走作成。<br>あなたは確認するだけ。</p>
+
+    <div class="mini-demo">
+      <div class="mini-demo-left">
+        <div class="mini-chrome">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span>Pages — 稟議書_Vendor_Inc_導入.pages</span>
+        </div>
+        <div class="doc-page">
+          <h4>稟議書 / Vendor Inc. Enterprise Plan 導入の件</h4>
+          <p><strong>1. 目的</strong></p>
+          <p>営業部門の <span class="doc-highlight">SaaS コスト削減 / 月額¥504,000 の Salesforce ライセンス見直し</span> を目的に、Vendor Inc. の Enterprise Plan を…</p>
+          <p><strong>2. 効果試算</strong></p>
+          <p>移行で年間 <span class="doc-blank"></span> の削減を見込む。詳細は別紙…</p>
+          <p><strong>3. リスクと対策</strong></p>
+          <p>移行期間中の <span class="doc-blank"></span>。データ移行に <span class="doc-blank"></span>…</p>
+          <p><strong>4. 比較検討</strong></p>
+          <p>競合: <span class="doc-blank"></span>…</p>
+        </div>
+      </div>
+
+      <div class="mini-demo-right">
+        <div class="mini-head">
+          <div class="second-avatar"><video src="demi.mp4" autoplay loop muted playsinline></video></div>
+          <span>Second</span>
+          <span class="mini-status">● DRAFTING</span>
+        </div>
+        <div class="mini-alert advisor">
+          <span class="mini-tag">💭 やっとくで〜</span>
+          目的・効果試算・リスク・比較検討、<strong>全部</strong>私がドラフトしとくで🩷 御社の過去稟議3本の文体に合わせてある。<strong>2分で</strong>共有する。
+        </div>
+        <div class="mini-alert">
+          <span class="mini-tag">⚑ 同時に併走中</span>
+          <strong>議事録(完成)</strong> → Slack #all-sales に投稿予定。<br><strong>営業へのカウンター返信メール</strong> → 価格交渉ロジック付きで下書き完了。
+        </div>
+        <div class="mini-alert build">
+          <span class="mini-tag">🤖 もし内製したかったら</span>
+          このフロー全部、御社の Notion + Slack + Gmail に <strong>read-only でつないだ agent</strong> で再現可能。<strong>5日</strong>で MVP 立ち上がる。Second の代わりに動く子を作れるで〜
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- WHY IT WORKS — Knowledge sources -->
 <section id="why">
   <div class="container">
